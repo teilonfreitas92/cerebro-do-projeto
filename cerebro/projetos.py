@@ -51,9 +51,14 @@ def _ler_cwd_do_arquivo(arq, limite_linhas=80):
 
 def decodificar_pelo_disco(nome):
     """'C--Users-ana-Projetos-loja' -> a pasta real, procurando entre as pastas que existem aquela cujo nome "achatado"
-    (tudo que não é letra/dígito vira '-') casa com o começo do que sobrou. Devolve '' se não achar."""
+    (tudo que não é letra/dígito vira '-') casa com o começo do que sobrou. Devolve '' se não achar.
+    No Linux e no Mac o caminho começa em '/', então o nome começa com '-' ('-home-ana-loja' -> /home/ana/loja)."""
     m = re.match(r"^([A-Za-z])--(.*)$", nome)
-    if not m:
+    if m:
+        raiz, resto = Path(m.group(1).upper() + ":\\"), m.group(2)
+    elif nome.startswith("-") and len(nome) > 1:
+        raiz, resto = Path("/"), nome[1:]
+    else:
         return ""
 
     def procurar(atual, resto):
@@ -71,7 +76,7 @@ def decodificar_pelo_disco(nome):
                     return r
         return None
 
-    r = procurar(Path(m.group(1).upper() + ":\\"), m.group(2))
+    r = procurar(raiz, resto)
     return str(r) if r else ""
 
 

@@ -485,9 +485,13 @@ class TesteInstalar(unittest.TestCase):
         self.assertFalse((self.raiz / ".venv").exists())
 
     def test_abre_o_painel_so_se_aceitar(self):
-        self.rodar("--sem-dependencias", entrada=["n", "n", "n"])
+        # perguntas antes de "Abrir o painel agora?": Graphify e, só no Windows, o atalho (no macOS/Linux ele não pergunta)
+        antes = ["n", "n"] if os.name == "nt" else ["n"]
+        self.rodar("--sem-dependencias", entrada=antes + ["n"])
+        self.assertIn("Abrir o painel agora?", self.perguntas[-1])
         self.assertFalse(any("abrir_cerebro.py" in " ".join(c) for c, _ in self.gravador.chamadas))
-        self.rodar("--sem-dependencias", entrada=["n", "n", "s"])
+        self.rodar("--sem-dependencias", entrada=antes + ["s"])
+        self.assertIn("Abrir o painel agora?", self.perguntas[-1])
         self.assertTrue(any("abrir_cerebro.py" in " ".join(c) for c, _ in self.gravador.chamadas))
 
 

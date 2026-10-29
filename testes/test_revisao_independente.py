@@ -10,9 +10,10 @@ import time
 import unittest
 import warnings
 from pathlib import Path
+from unittest import mock
 
 from testes import _ambiente as amb
-from cerebro import agentes, armazem, config, ferramentas, indice, mapa_auto, memoria, novidades, projetos, servidor, transcricao
+from cerebro import acesso_windows, agentes, armazem, config, ferramentas, indice, mapa_auto, memoria, novidades, projetos, servidor, transcricao
 from cerebro.segredos import OCULTO
 from testes.test_servidor import Base
 
@@ -466,18 +467,44 @@ class TesteDoisServidores(unittest.TestCase):
         self.assertFalse(servidor._pid_vivo("x"))
 
 
-@unittest.skipUnless(os.name == "nt", "ACL do Windows")
 class TesteAclDoToken(unittest.TestCase):
+    @unittest.skipUnless(os.name == "nt", "lista de acesso (ACL) e icacls são do Windows; no macOS/Linux vale o modo 600")
     def test_token_existente_tem_o_acesso_reaplicado(self):
         amb.apagar(config.CASA / "token")
         t = config.ler_token()
         caminho = config.CASA / "token"
-        self.assertTrue(config.acesso_so_do_dono(caminho))
+
+        def quem():                                    # aparece no registro do CI se falhar: SID do usuário e as entradas
+            return f"usuário {acesso_windows.sid_do_usuario()!r}, entradas {acesso_windows.entradas(caminho)!r}"
+        self.assertTrue(acesso_windows.sid_do_usuario().startswith("S-"))
+        self.assertTrue(config.acesso_so_do_dono(caminho), quem())
         subprocess.run(["icacls", str(caminho), "/inheritance:e"], capture_output=True, creationflags=0x08000000)    # volta a herdar: mais de um acesso
-        self.assertFalse(config.acesso_so_do_dono(caminho))
+        self.assertFalse(config.acesso_so_do_dono(caminho), quem())
         config._acl_feita.clear()
         self.assertEqual(config.ler_token(), t)                           # ler um token que já existe reaplica a restrição
+        self.assertTrue(config.acesso_so_do_dono(caminho), quem())
+
+    @unittest.skipIf(os.name == "nt", "no Windows vale a lista de acesso (teste acima)")
+    def test_token_fica_com_modo_600_fora_do_windows(self):
+        amb.apagar(config.CASA / "token")
+        config.ler_token()
+        caminho = config.CASA / "token"
         self.assertTrue(config.acesso_so_do_dono(caminho))
+        os.chmod(caminho, 0o644)
+        self.assertFalse(config.acesso_so_do_dono(caminho))
+        config._acl_feita.clear()
+        config.ler_token()
+        self.assertTrue(config.acesso_so_do_dono(caminho))
+
+    def test_regra_so_do_dono_pelos_sids(self):
+        eu, outro = "S-1-5-21-1-2-3-1001", "S-1-5-18"
+        casos = [([(0, eu)], True), ([(0, eu), (1, outro)], True),           # negar acesso a outro não abre nada
+                 ([(0, eu), (0, outro)], False), ([(0, outro)], False),      # SYSTEM/Administradores herdados = não é só do dono
+                 ([(1, eu)], False), ([], False), (None, False),             # ninguém tem acesso / lista ilegível ou nula
+                 ([(0, eu), (5, "")], False)]                                # tipo que não sabemos ler: na dúvida, não
+        for lista, esperado in casos:
+            with mock.patch.object(acesso_windows, "entradas", return_value=lista):
+                self.assertEqual(acesso_windows.so_do_dono("x", sid=eu), esperado, lista)
 
 
 class TesteNovidadesHref(unittest.TestCase):

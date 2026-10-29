@@ -362,9 +362,13 @@ def _restringir_ao_dono(caminho):
             pass
         return
     import subprocess
+
+    from . import acesso_windows
     try:
-        sid = subprocess.run(["whoami", "/user", "/fo", "csv", "/nh"], capture_output=True, text=True, timeout=10,
-                             creationflags=0x08000000).stdout.strip().split(",")[-1].strip('"')
+        sid = acesso_windows.sid_do_usuario()
+        if not sid.startswith("S-"):            # reserva: o whoami (lido em bytes; o SID é sempre ASCII, a língua não importa)
+            sid = subprocess.run(["whoami", "/user", "/fo", "csv", "/nh"], capture_output=True, timeout=10,
+                                 creationflags=0x08000000).stdout.decode("ascii", "replace").strip().split(",")[-1].strip('"')
         if not sid.startswith("S-"):
             return
         subprocess.run(["icacls", str(caminho), "/inheritance:r", "/grant:r", f"*{sid}:F"], capture_output=True, timeout=10,
@@ -378,18 +382,15 @@ def _restringir_ao_dono(caminho):
 
 
 def acesso_so_do_dono(caminho):
-    """Confere que só o usuário atual acessa o arquivo. Windows: icacls mostra UMA única entrada de acesso. macOS/Linux: modo 600."""
+    """Confere que só o usuário atual acessa o arquivo. Windows: toda entrada que dá acesso é do SID do usuário (lido pela
+    API do Windows, não pelo texto do icacls, que muda com a língua e a codificação). macOS/Linux: modo 600."""
     if os.name != "nt":
         try:
             return (os.stat(caminho).st_mode & 0o077) == 0
         except OSError:
             return False
-    import subprocess
-    try:
-        saida = subprocess.run(["icacls", str(caminho)], capture_output=True, text=True, timeout=10, creationflags=0x08000000).stdout
-        return saida.count(":(") == 1
-    except Exception:
-        return False
+    from . import acesso_windows
+    return acesso_windows.so_do_dono(caminho)
 
 
 def valor_cookie(token):

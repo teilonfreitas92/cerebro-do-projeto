@@ -602,6 +602,7 @@ class TesteAvisos(unittest.TestCase):
         with mock.patch.object(subprocess, "run", side_effect=AssertionError("PowerShell real chamado")):
             self.assertFalse(avisos._executar_powershell("a", "b"))
 
+    @unittest.skipUnless(os.name == "nt", "a notificação usa o PowerShell do Windows (fora dele não há powershell.exe)")
     def test_powershell_recebe_texto_por_variavel_e_sem_janela(self):
         visto = {}
 

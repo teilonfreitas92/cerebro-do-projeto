@@ -50,6 +50,19 @@ from cerebro import analise, bastao, cli_backup, cli_encaixe, cli_gestora, confi
 SAIDA_OK, SAIDA_ERRO = 0, 2
 
 
+class _Analisador(argparse.ArgumentParser):
+    """No Linux e no Mac o slug do Claude Code começa com '-' ('-home-ana-loja'). O argparse leria isso como opção
+    ('-h' de ajuda + 'ome-ana-loja') e sairia. Aqui, uma palavra com um só '-' na frente, mais comprida que '-x' e que
+    não é opção conhecida vale como projeto/sessão/valor. '-h', '--help' e as opções '--...' seguem como sempre.
+    Os subcomandos herdam esta classe (add_subparsers usa a classe do analisador principal)."""
+
+    def _parse_optional(self, arg):
+        if (len(arg) > 2 and arg[0] == "-" and arg[1] != "-"
+                and arg.split("=", 1)[0] not in self._option_string_actions):
+            return None                                  # None = argumento comum (posicional ou valor de opção)
+        return super()._parse_optional(arg)
+
+
 def achar_projeto(ref):
     """Resolve o projeto pelo slug, nome, trecho único do nome ou caminho. Levanta ValueError com a lista se ficar ambíguo."""
     lista = projetos.descobrir(forcar=True)
@@ -353,7 +366,7 @@ def cmd_explicar(a):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(description="Cérebro do Projeto — linha de comando do gestor")
+    ap = _Analisador(description="Cérebro do Projeto — linha de comando do gestor")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("projetos").set_defaults(f=cmd_projetos)
     for nome, f in (("estado", cmd_estado), ("a-conferir", cmd_a_conferir)):

@@ -88,6 +88,18 @@ class TesteDescoberta(unittest.TestCase):
         d = projetos.decodificar_pelo_disco(projetos.codificar(real))
         self.assertEqual(Path(d).resolve(), real.resolve())
 
+    def test_decodifica_slug_de_linux_e_mac(self):
+        # No Linux/Mac o caminho começa em '/', e o slug começa com '-' ('-home-ana-loja'). Montamos esse slug a partir da
+        # pasta do teste sem a letra do disco: no Windows '/' é a raiz do disco atual, então dá para conferir aqui também.
+        real, _ = criar_projeto("Desktop/Meu_Projeto-x y")
+        if real.resolve().anchor.lower() != Path("/").resolve().anchor.lower():
+            self.skipTest("a pasta de teste está em outro disco que não o atual")
+        slug = projetos.codificar("/" + real.resolve().relative_to(real.resolve().anchor).as_posix())
+        self.assertTrue(slug.startswith("-") and "--cerebro-testes-" in slug)     # '.cerebro-testes' vira '-cerebro-testes'
+        self.assertEqual(Path(projetos.decodificar_pelo_disco(slug)).resolve(), real.resolve())
+        self.assertEqual(projetos.decodificar_pelo_disco("-"), "")
+        self.assertEqual(projetos.decodificar_pelo_disco("-nao-existe-de-jeito-nenhum-x9"), "")
+
     def test_eh_proibido(self):
         cfg = {"nunca_entrar": ["Financeiro", " "]}
         self.assertTrue(projetos.eh_proibido("C--Users-ana-Desktop-financeiro", cfg=cfg))
