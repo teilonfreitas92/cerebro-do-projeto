@@ -3,7 +3,9 @@
 Antes a conferência lia a saída do icacls, que muda com a língua do Windows ("BUILTIN\\Administradores") e vem numa
 codificação antiga (OEM): com o Python em UTF-8 (PYTHONUTF8=1, como no GitHub Actions) a leitura quebrava. Aqui os
 dados vêm pela API do Windows (advapi32) como SIDs ("S-1-5-21-..."), que são iguais em qualquer língua.
-Só leitura: nada aqui muda permissão de arquivo (quem muda é config._restringir_ao_dono, com o icacls).
+restringir() grava uma lista de acesso nova e protegida (sem herança) com UMA entrada só: acesso total para o usuário.
+Isso também tira as entradas EXPLÍCITAS que um processo de administrador põe ao criar o arquivo (SYSTEM,
+Administradores, OWNER RIGHTS), que o `icacls /inheritance:r` não tira. Quem chama é config._restringir_ao_dono.
 """
 import ctypes
 import os
@@ -30,7 +32,41 @@ def _dlls():
     adv.GetNamedSecurityInfoW.restype = wintypes.DWORD
     adv.GetAclInformation.argtypes = [ctypes.c_void_p, ctypes.c_void_p, wintypes.DWORD, ctypes.c_int]
     adv.GetAce.argtypes = [ctypes.c_void_p, wintypes.DWORD, ctypes.POINTER(ctypes.c_void_p)]
+    adv.ConvertStringSidToSidW.argtypes = [wintypes.LPCWSTR, ctypes.POINTER(ctypes.c_void_p)]
+    adv.GetLengthSid.argtypes = [ctypes.c_void_p]
+    adv.GetLengthSid.restype = wintypes.DWORD
+    adv.InitializeAcl.argtypes = [ctypes.c_void_p, wintypes.DWORD, wintypes.DWORD]
+    adv.AddAccessAllowedAce.argtypes = [ctypes.c_void_p, wintypes.DWORD, wintypes.DWORD, ctypes.c_void_p]
+    adv.SetNamedSecurityInfoW.argtypes = [wintypes.LPWSTR, ctypes.c_int, wintypes.DWORD, ctypes.c_void_p,
+                                          ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p]
+    adv.SetNamedSecurityInfoW.restype = wintypes.DWORD
     return adv, k32
+
+
+def restringir(caminho, sid):
+    """Troca a lista de acesso do arquivo por uma protegida (não herda nada) com uma única entrada: acesso total para
+    `sid`. Tudo o que havia antes (herdado ou explícito) sai. True se o Windows aceitou."""
+    if os.name != "nt" or not str(sid).startswith("S-"):
+        return False
+    try:
+        adv, k32 = _dlls()
+        psid = ctypes.c_void_p()
+        if not adv.ConvertStringSidToSidW(str(sid), ctypes.byref(psid)):
+            return False
+        try:
+            # ACL (8 bytes) + ACCESS_ALLOWED_ACE sem o SidStart (8 bytes) + o SID, arredondado para múltiplo de 4
+            tam = (8 + 8 + adv.GetLengthSid(psid) + 3) & ~3
+            acl = ctypes.create_string_buffer(tam)
+            if not adv.InitializeAcl(acl, tam, 2):                                   # 2 = ACL_REVISION
+                return False
+            if not adv.AddAccessAllowedAce(acl, 2, 0x001F01FF, psid):                # 0x1F01FF = FILE_ALL_ACCESS
+                return False
+            # 1 = SE_FILE_OBJECT; 4 = DACL_SECURITY_INFORMATION; 0x80000000 = PROTECTED_DACL (corta a herança)
+            return adv.SetNamedSecurityInfoW(str(caminho), 1, 0x80000004, None, None, acl, None) == 0
+        finally:
+            k32.LocalFree(psid)
+    except (OSError, AttributeError, ValueError):
+        return False
 
 
 def _sid_texto(adv, k32, psid):

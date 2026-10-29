@@ -353,7 +353,9 @@ def ler_token():
 
 
 def _restringir_ao_dono(caminho):
-    """Tira a herança de acesso e deixa só o usuário atual (pelo SID). Se algo der errado e o arquivo ficar ilegível,
+    """Deixa no arquivo uma única entrada de acesso, a do usuário atual (pelo SID), sem herança e sem as entradas explícitas
+    que um processo de administrador cria (API do Windows; icacls de reserva). Depois confere e avisa no terminal se outras
+    contas ainda entram. Usada no token, no token dos ganchos e nas cópias do settings.json. Se o arquivo ficar ilegível,
     volta ao padrão do Windows: nunca deixa o dono sem acesso ao próprio token. No macOS/Linux: chmod 600 (só o dono lê)."""
     if os.name != "nt":
         try:
@@ -370,15 +372,32 @@ def _restringir_ao_dono(caminho):
             sid = subprocess.run(["whoami", "/user", "/fo", "csv", "/nh"], capture_output=True, timeout=10,
                                  creationflags=0x08000000).stdout.decode("ascii", "replace").strip().split(",")[-1].strip('"')
         if not sid.startswith("S-"):
-            return
-        subprocess.run(["icacls", str(caminho), "/inheritance:r", "/grant:r", f"*{sid}:F"], capture_output=True, timeout=10,
-                       creationflags=0x08000000)
+            return _avisar_acesso(caminho, "não consegui saber quem é o usuário")
+        if not acesso_windows.restringir(caminho, sid):
+            # reserva: icacls tira a herança e, uma a uma, as entradas explícitas de outros (SYSTEM, Administradores...)
+            subprocess.run(["icacls", str(caminho), "/inheritance:r", "/grant:r", f"*{sid}:F"], capture_output=True, timeout=10,
+                           creationflags=0x08000000)
+            for tipo, outro in acesso_windows.entradas(caminho) or []:
+                if tipo == 0 and outro.startswith("S-") and outro != sid:
+                    subprocess.run(["icacls", str(caminho), "/remove:g", f"*{outro}"], capture_output=True, timeout=10,
+                                   creationflags=0x08000000)
         caminho.read_text(encoding="ascii")
     except Exception:
         try:
             subprocess.run(["icacls", str(caminho), "/reset"], capture_output=True, timeout=10, creationflags=0x08000000)
         except Exception:
             pass
+    if not acesso_so_do_dono(caminho):
+        _avisar_acesso(caminho, "outras contas ainda conseguem abrir o arquivo")
+
+
+def _avisar_acesso(caminho, motivo):
+    """Não conseguiu deixar o arquivo só para o dono: avisa no terminal (o painel e a CLI seguem funcionando)."""
+    import sys
+    try:
+        print(f"[cérebro] aviso: {caminho.name} não ficou só para você ({motivo}).", file=sys.stderr)
+    except Exception:
+        pass
 
 
 def acesso_so_do_dono(caminho):

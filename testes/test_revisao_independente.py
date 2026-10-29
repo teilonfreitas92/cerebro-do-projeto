@@ -484,6 +484,28 @@ class TesteAclDoToken(unittest.TestCase):
         self.assertEqual(config.ler_token(), t)                           # ler um token que já existe reaplica a restrição
         self.assertTrue(config.acesso_so_do_dono(caminho), quem())
 
+    @unittest.skipUnless(os.name == "nt", "lista de acesso (ACL) e icacls são do Windows")
+    def test_entradas_explicitas_de_outros_tambem_saem(self):
+        # No runner do GitHub (administrador) o arquivo nasce com SYSTEM, Administradores e OWNER RIGHTS EXPLÍCITOS, que o
+        # `icacls /inheritance:r` não tira. Simula com uma entrada explícita para Administradores (S-1-5-32-544).
+        for via_api in (True, False):                                    # False: a API falha e vale a reserva do icacls
+            with self.subTest(via_api=via_api):
+                caminho = amb.BASE / f"acl_extra_{via_api}.txt"
+                amb.apagar(caminho)
+                caminho.write_text("segredo", encoding="ascii")
+                subprocess.run(["icacls", str(caminho), "/grant", "*S-1-5-32-544:R"], capture_output=True, creationflags=0x08000000)
+                self.assertIn((0, "S-1-5-32-544"), acesso_windows.entradas(caminho))
+                self.assertFalse(config.acesso_so_do_dono(caminho))
+                if via_api:
+                    config._restringir_ao_dono(caminho)
+                else:
+                    with mock.patch.object(acesso_windows, "restringir", return_value=False):
+                        config._restringir_ao_dono(caminho)
+                eu = acesso_windows.sid_do_usuario()
+                self.assertTrue(config.acesso_so_do_dono(caminho), f"entradas {acesso_windows.entradas(caminho)!r}")
+                self.assertEqual([s for t, s in acesso_windows.entradas(caminho) if t == 0], [eu])
+                self.assertEqual(caminho.read_text(encoding="ascii"), "segredo")        # o dono continua lendo
+
     @unittest.skipIf(os.name == "nt", "no Windows vale a lista de acesso (teste acima)")
     def test_token_fica_com_modo_600_fora_do_windows(self):
         amb.apagar(config.CASA / "token")
