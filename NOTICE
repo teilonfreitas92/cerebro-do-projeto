@@ -1,0 +1,25 @@
+Cérebro do Projeto
+Copyright (c) 2026 Teilon Freitas. Licença MIT (arquivo LICENSE).
+
+Este produto usa o Graphify como MOTOR DO MAPA:
+
+  Graphify (autor: safishamsi) - https://github.com/safishamsi/graphify
+  Licença: Apache License 2.0 (veja o texto completo e os avisos no repositório do projeto).
+
+Como o Graphify é usado aqui:
+  * o Graphify é OPCIONAL e é instalado à parte, pela pessoa (uv tool install graphifyy, ou pip install graphifyy);
+    o instalar.py só oferece instalar, sempre perguntando;
+  * este repositório só roda o comando "graphify update ." dentro de um projeto quando a pessoa clica em "Gerar o mapa" e LÊ os
+    arquivos que ele gera (graphify-out/graph.json e, quando existirem, .graphify_analysis.json e .graphify_labels.json);
+    a página do mapa (mapa/cerebro.js, mapa/cerebro.css) tem motor de forças e desenho em Canvas escritos aqui,
+    sem copiar código do Graphify;
+  * nenhum arquivo do Graphify é redistribuído com este projeto.
+Se um dia o código ou o pacote do Graphify passar a ser distribuído junto com o Cérebro, é obrigatório incluir o texto da licença
+Apache-2.0, manter este aviso e as notas de copyright do Graphify, e indicar as mudanças feitas.
+
+"Graphify" é nome do projeto de terceiros e aparece aqui só para dar o crédito devido; a marca não é usada como nome
+ou logotipo deste produto.
+
+Outros componentes (instalados por pip a partir do requirements.txt, não redistribuídos aqui):
+  aiohttp e dependências (aiosignal, frozenlist, multidict, yarl, attrs, propcache, aiohappyeyeballs, idna) - licenças
+  Apache-2.0, MIT e BSD - https://github.com/aio-libs/aiohttp

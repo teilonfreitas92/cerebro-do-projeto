@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR" data-tema="escuro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cérebro do Projeto</title>
+<link rel="stylesheet" href="cerebro.css">
+</head>
+<body>
+<header class="topo">
+  <div class="marca">
+    <svg class="logo" viewBox="0 0 256 256" role="img" aria-label="Cérebro do Projeto">
+      <defs><linearGradient id="tt" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6EE2FF"/><stop offset="55%" stop-color="#00B2FF"/><stop offset="100%" stop-color="#0057D6"/></linearGradient></defs><path d="M 128,24 L 218.07,76 L 218.07,180 L 128,232 L 37.93,180 L 37.93,76 Z" fill="none" stroke="url(#tt)" stroke-width="16" stroke-linejoin="round"/><g stroke="url(#tt)" stroke-width="12" stroke-linecap="round" fill="none"><path d="M 90,150 L 128,100 L 166,150 M 90,150 L 166,150"/></g><g fill="url(#tt)"><circle cx="128" cy="100" r="17"/><circle cx="90" cy="150" r="17"/><circle cx="166" cy="150" r="17"/></g></svg>
+    <div class="marca-texto">
+      <h1><b>Cérebro</b><em> do Projeto</em></h1>
+      <small id="subtitulo">carregando o mapa…</small>
+    </div>
+  </div>
+
+  <div id="gestor" class="gestor-chip" hidden></div>
+
+  <nav class="abas" aria-label="Seções">
+    <button type="button" data-aba="grafo" class="ativa">Cérebro</button>
+    <button type="button" data-aba="painel">Painel</button>
+  </nav>
+
+  <div class="busca">
+    <input id="busca" type="search" autocomplete="off" spellcheck="false" placeholder="Buscar grupo, arquivo ou função  ( / )" aria-label="Buscar no mapa">
+    <ul id="sugestoes" class="sugestoes" hidden></ul>
+  </div>
+
+  <div class="acoes">
+    <button type="button" id="b-padrao" class="bt pri" title="Volta à visão geral, solta os pontos presos e mostra todas as ligações">Voltar ao padrão</button>
+    <button type="button" id="b-centro" class="bt leve" title="Enquadra tudo na tela">Centralizar</button>
+    <button type="button" id="b-soltar" class="bt leve" title="Solta todos os pontos que você prendeu" disabled>Soltar pontos</button>
+    <div class="espacar" role="group" aria-label="Espaçamento entre os pontos" title="Espaçamento entre os pontos (fica lembrado neste navegador)">
+      <button type="button" id="b-esp-menos" class="bt leve so" aria-label="Menos espaço entre os pontos">−</button>
+      <span id="esp-valor" class="esp-valor">Espaço</span>
+      <button type="button" id="b-esp-mais" class="bt leve so" aria-label="Mais espaço entre os pontos">+</button>
+    </div>
+    <button type="button" id="b-numeros" class="bt leve so" title="Mostra ou esconde a faixa de números (grupos, arquivos…)" aria-label="Faixa de números" aria-pressed="true">#</button>
+    <button type="button" id="b-pulsos" class="bt leve so" title="Liga e desliga os pulsos de luz nas ligações" aria-label="Pulsos de luz" aria-pressed="true">✦</button>
+    <button type="button" id="b-tema" class="bt leve so" title="Alterna entre escuro e claro" aria-label="Alternar tema">◐</button>
+  </div>
+</header>
+
+<section id="faixa" class="faixa" aria-label="Números do projeto"></section>
+
+<main>
+  <section id="vista-grafo" class="vista">
+    <canvas id="tela" aria-label="Mapa interativo das ligações do projeto" tabindex="0"></canvas>
+    <nav id="migalhas" class="migalhas" aria-label="Onde você está"></nav>
+    <aside id="legenda" class="legenda" aria-label="Departamentos"></aside>
+    <div id="dica" class="dica">Arraste os pontos para esticar as ligações · duplo clique solta um ponto preso · roda do mouse dá zoom · clique num ponto para ler sobre ele</div>
+    <div id="tooltip" class="tooltip" hidden></div>
+    <aside id="detalhe" class="detalhe fechado" aria-live="polite"></aside>
+    <div id="carregando" class="carregando">Montando o cérebro…</div>
+  </section>
+  <section id="vista-painel" class="vista painel" hidden></section>
+</main>
+
+<div id="aviso" class="aviso" role="status" hidden></div>
+
+<script src="dados.js" charset="utf-8"></script>
+<script src="cerebro.js" charset="utf-8"></script>
+<script src="tarefa.js" charset="utf-8"></script>
+</body>
+</html>

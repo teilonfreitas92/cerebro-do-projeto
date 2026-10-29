@@ -1,0 +1,54 @@
+name: Ideia
+description: Sugira uma função nova ou uma melhoria.
+title: "[Ideia] "
+labels: ["ideia"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado pela ideia! Não precisa saber programar para sugerir.
+
+        **Privacidade:** não cole conversas do Claude Code, memória, segredos (chaves, tokens, senhas) nem nomes dos seus projetos.
+        Se quiser dar um exemplo, invente (ex.: "uma loja de plantas").
+  - type: textarea
+    id: problema
+    attributes:
+      label: Que problema isso resolve?
+      description: O que hoje é difícil, demorado ou não dá para ver no Cérebro.
+      placeholder: "Quando tenho muitos projetos, eu queria ..."
+    validations:
+      required: true
+  - type: textarea
+    id: ideia
+    attributes:
+      label: Como você imagina
+      description: Uma tela, um botão, um aviso, um comando... Pode desenhar em palavras.
+    validations:
+      required: true
+  - type: textarea
+    id: alternativas
+    attributes:
+      label: Como você faz hoje (se faz)
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - Painel geral e Precisa de você
+        - Agentes ao vivo e A conferir
+        - Tarefas e sessão gestora
+        - Memória e decisões
+        - Custos e orçamento
+        - Mapa do código
+        - Ferramentas, Análise, Novidades, Inventário
+        - Backup, rotinas e avisos
+        - Instalação e documentação
+        - Outra
+  - type: checkboxes
+    id: cuidados
+    attributes:
+      label: Cuidados
+      options:
+        - label: Conferi que não colei conversas, memória, segredos nem dados pessoais.
+          required: true
+        - label: Entendo que algo que escreva fora do ~/.cerebro sempre vai pedir confirmação e mostrar a prévia antes.

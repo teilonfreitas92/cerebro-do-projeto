@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ruff_cache/
+*.log
+
+# dados locais e do instalador (nunca vão para o repositório)
+.cerebro-testes/
+.instalacao.json
+config.json
+token
+servidor.json
+
+# demonstração e fotos temporárias
+demo/saida/
+fotos-temporarias/
+perfil_chrome*/
+*.tmp
+
+# coisas locais do Claude Code, do Graphify e de segredos (nunca vão para o repositório)
+.claude/
+CLAUDE.local.md
+graphify-out/
+.graphify_*
+.env
+.env.*
+CerebroBackup/
+
+node_modules/

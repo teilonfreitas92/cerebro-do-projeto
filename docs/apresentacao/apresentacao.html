@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>Cérebro do Projeto — apresentação</title>
+<meta name="viewport" content="width=1280"><style>
+@page { size: 1280px 720px; margin: 0 }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#070b12;--card:#101a27;--card2:#152233;--line:#22344a;--tx:#e7edf5;--mut:#8fa3b8;--c:#00b2ff;--c2:#6ee2ff;--c3:#0057d6;--am:#ffc857;--vi:#8a93ff;--ok:#2fd39a}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{background:#2a2f38;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;color:var(--tx)}
+.slide{width:1280px;height:720px;position:relative;overflow:hidden;background:var(--bg);margin:0 auto 20px;page-break-after:always;break-after:page;
+  background-image:radial-gradient(900px 500px at 105% -10%,rgba(0,178,255,.20),transparent 60%),radial-gradient(700px 420px at -10% 110%,rgba(0,87,214,.20),transparent 60%)}
+.slide:last-child{page-break-after:auto;break-after:auto}
+@media print{body{background:none}.slide{margin:0}}
+.rod{position:absolute;left:44px;right:44px;bottom:16px;display:flex;justify-content:space-between;font-size:11px;color:#5d7088;letter-spacing:.04em}
+.rod b{color:var(--c)}
+.cab{position:absolute;left:44px;right:44px;top:30px}
+.kick{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--c);background:rgba(0,178,255,.10);border:1px solid rgba(0,178,255,.35);padding:4px 12px;border-radius:99px}
+h2{font-size:31px;line-height:1.15;margin-top:12px;font-weight:700;letter-spacing:-.01em;max-width:1190px}
+.corpo{position:absolute;left:44px;right:44px;top:122px;bottom:44px}
+.corpo.duas{display:flex;gap:30px;align-items:flex-start}
+.esq{flex:1;min-width:0}
+.dir{flex:none}
+.intro{font-size:16px;line-height:1.4;color:#c4d0de;margin-bottom:10px}
+h4{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--c);margin:8px 0 5px}
+ul{list-style:none}
+.esq ul li{position:relative;padding-left:16px;font-size:15px;line-height:1.35;margin-bottom:6px;color:#dbe4ee}
+.esq ul li:before{content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:2px;background:linear-gradient(135deg,var(--c2),var(--c3))}
+.pequena li{font-size:15.5px!important}
+code{font-family:Consolas,"Cascadia Mono",monospace;font-size:.88em;background:#0b1522;border:1px solid #1e3148;color:#9fdcff;padding:0 5px;border-radius:4px;white-space:nowrap}
+.caixa{border-radius:12px;padding:10px 14px;margin-top:10px;font-size:15px;line-height:1.4;border:1px solid var(--line);background:var(--card)}
+.caixa>b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px}
+.caixa.ex{border-color:rgba(138,147,255,.45)}.caixa.ex b{color:var(--vi)}
+.caixa.ben{border-color:rgba(47,211,154,.45)}.caixa.ben b{color:var(--ok)}
+.caixa.aviso{border-color:rgba(255,200,87,.5)}.caixa.aviso b{color:var(--am)}
+.shot{position:relative;width:100%;border-radius:10px;border:1px solid #2a4260;box-shadow:0 14px 40px rgba(0,0,0,.55),0 0 0 1px rgba(0,178,255,.12);background:#0a1017}
+.shot>img{position:absolute;left:0;top:0;width:100%;border-radius:9px}
+.shot .rec{position:absolute;inset:0;overflow:hidden;border-radius:9px}
+.rec img{position:absolute;height:auto!important;max-width:none}
+.shot.alta{max-height:470px}
+.b{position:absolute;transform:translate(-50%,-50%);width:24px;height:24px;border-radius:50%;background:var(--am);color:#1a1200;font:700 13px/24px "Segoe UI",Arial,sans-serif;text-align:center;font-style:normal;box-shadow:0 0 0 3px rgba(7,11,18,.85),0 2px 8px rgba(0,0,0,.6)}
+.leg{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:5px 18px;margin-top:11px;counter-reset:x}
+.leg li{display:flex;gap:7px;align-items:flex-start;font-size:12.5px;line-height:1.3;color:#c4d0de}
+.leg i{flex:none;width:18px;height:18px;border-radius:50%;background:var(--am);color:#1a1200;font:700 11px/18px "Segoe UI",sans-serif;text-align:center;font-style:normal;margin-top:0}
+.grade{display:grid;gap:16px}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}.c5{grid-template-columns:repeat(5,1fr)}.c6{grid-template-columns:repeat(6,1fr)}
+.cartao{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;padding:20px 20px 18px}
+.cartao h3{font-size:18px;margin-bottom:8px;line-height:1.2}
+.cartao p,.cartao li{font-size:14px;line-height:1.45;color:#c4d0de}
+.cartao ul li{position:relative;padding-left:15px;margin-bottom:7px}
+.cartao ul li:before{content:"";position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:2px;background:var(--c)}
+.cartao .num{font-size:34px;font-weight:800;color:var(--c);line-height:1;margin-bottom:10px}
+.dor{min-height:300px}.dor h3{font-size:19px}.dor p{font-size:14.5px}
+.ciano{color:var(--c)}
+.segunda{margin-top:16px}
+.cartao.peq p{font-size:13.5px}.cartao.peq h3{font-size:16px}
+.faixa{margin-top:22px;border-radius:14px;padding:16px 22px;font-size:19px;text-align:center;background:linear-gradient(90deg,rgba(0,178,255,.18),rgba(0,87,214,.18));border:1px solid rgba(0,178,255,.4)}
+.faixa.suave{font-size:16px;color:#c4d0de}
+.faixa b{color:var(--c2)}
+.mini{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-height:96px}
+.mini b{display:block;font-size:16px;margin-bottom:4px;color:#fff}
+.mini span{font-size:12.5px;color:var(--mut);line-height:1.35}
+.passos .passo{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;padding:18px 20px;min-height:170px}
+.pn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--c2),var(--c3));color:#04121c;font-weight:800;font-size:17px;line-height:34px;text-align:center;margin-bottom:10px}
+.passo h3{font-size:18px;margin-bottom:6px}.passo p{font-size:14px;line-height:1.45;color:#c4d0de}
+.seg svg{width:42px;height:42px;fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;margin-bottom:12px}
+.seg{min-height:330px}
+.lista-prox .cartao{min-height:160px}
+
+.corpo.cheio{display:flex;flex-direction:column;gap:18px;justify-content:center}
+.corpo.cheio .grade{flex:none;grid-auto-rows:auto}
+.corpo.cheio .grade.segunda{margin-top:0}
+.corpo.cheio .faixa{margin-top:0;flex:none}
+.corpo.cheio .cartao{display:flex;flex-direction:column}
+.corpo.cheio .cartao h3{font-size:24px;margin-bottom:10px}
+.corpo.cheio .cartao p,.corpo.cheio .cartao li{font-size:17.5px;line-height:1.5}
+.corpo.cheio .cartao{min-height:250px}.corpo.cheio .cartao.peq{min-height:150px}.corpo.cheio .passo{min-height:170px}
+.corpo.cheio .cartao .num{font-size:42px}
+.corpo.cheio .cartao.peq h3{font-size:21px}.corpo.cheio .cartao.peq p{font-size:16.5px}
+.corpo.cheio .passo h3{font-size:24px}.corpo.cheio .passo p{font-size:17.5px}
+.corpo.cheio .mini{display:flex;flex-direction:column;justify-content:center;min-height:100px}
+.corpo.cheio .mini b{font-size:19px}.corpo.cheio .mini span{font-size:14.5px}
+.corpo.cheio .seg svg{width:54px;height:54px}
+.corpo.cheio .dor{min-height:300px}.corpo.cheio .seg{min-height:300px}.corpo.cheio .lista-prox .cartao{min-height:190px}
+.mini.novo{border-color:rgba(47,211,154,.55);background:linear-gradient(180deg,rgba(47,211,154,.10),var(--card))}
+.corpo.cheio .c6{gap:12px}.corpo.cheio .c6 .mini{min-height:96px;padding:11px 12px}.corpo.cheio .c6 .mini b{font-size:15.5px}.corpo.cheio .c6 .mini span{font-size:12.5px}
+.corpo.cheio .novidades13{gap:12px}.corpo.cheio .novidades13 .cartao.peq{min-height:118px;padding:14px 16px}.corpo.cheio .novidades13 .cartao.peq h3{font-size:17px;margin-bottom:5px}.corpo.cheio .novidades13 .cartao.peq p{font-size:13.5px;line-height:1.4}
+.corpo.cheio .lista-prox.c3 .cartao{min-height:150px}.corpo.cheio .lista-prox.c3 .cartao h3{font-size:20px}.corpo.cheio .lista-prox.c3 .cartao p{font-size:15px}
+/* capa */
+.capa{position:absolute;inset:0;display:flex;align-items:center;padding:0 50px 0 64px;gap:34px}
+.capa-txt{width:430px;flex:none}
+.capa h1{font-size:44px;line-height:1.1;margin:22px 0 16px;letter-spacing:-.02em}
+.capa h1 em,.marca em{font-style:normal;color:var(--c)}
+.sub{font-size:17px;line-height:1.5;color:#c4d0de}
+.marca{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:700}
+.marca .logo{width:44px;height:44px;display:block}.marca .logo svg{width:100%;height:100%}
+.marca.grande{font-size:34px}.marca.grande .logo{width:64px;height:64px}
+.pilulas{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px}
+.pilulas span{font-size:12.5px;padding:5px 12px;border:1px solid rgba(0,178,255,.4);border-radius:99px;color:var(--c2);background:rgba(0,178,255,.08)}
+.capa-img{flex:1}
+.capa-img img{width:100%;display:block;border-radius:14px;border:1px solid #2a4260;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 70px rgba(0,178,255,.25)}
+/* diagrama */
+.diag{width:100%;height:auto;display:block}
+.diag .t1{font:800 24px "Segoe UI",sans-serif;letter-spacing:.08em}.diag .t2{font:600 15px "Segoe UI",sans-serif}
+.diag .t3{font:700 19px "Segoe UI",sans-serif;fill:#fff}.diag .t4{font:15px "Segoe UI",sans-serif;fill:#c4d0de}.diag .t5{font:13px "Segoe UI",sans-serif;fill:#9fb2c6}
+.diag .ag rect{fill:#122338;stroke:#00b2ff;stroke-width:1.5}
+.diag .seta{fill:none;stroke:#00b2ff;stroke-width:2;marker-end:url(#ar)}
+.diag .fila{fill:rgba(255,200,87,.10);stroke:#ffc857;stroke-width:1.6}
+.diag .proj{fill:rgba(47,211,154,.10);stroke:#2fd39a;stroke-width:1.6}
+.diag .mem{fill:rgba(138,147,255,.14);stroke:#8a93ff;stroke-width:1.8}
+.rodape-d{margin-top:10px;text-align:center;font-size:15px;color:#c4d0de}
+.rodape-d b{color:var(--c2)}
+/* terminal */
+.term{border-radius:12px;background:#060a10;border:1px solid #223650;box-shadow:0 14px 40px rgba(0,0,0,.5);overflow:hidden}
+.term .barra{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#0f1a29;border-bottom:1px solid #223650;font-size:11px;color:var(--mut)}
+.term .barra i{width:10px;height:10px;border-radius:50%;background:#2c3e57}.term .barra span{margin-left:8px}
+.term pre{font:14px/1.6 Consolas,"Cascadia Mono",monospace;padding:14px 16px;color:#d8e6f5;white-space:pre-wrap}
+.term .c{color:#5d7a96}.term .a{color:#9fdcff}
+.peq{font-size:12.5px;color:var(--mut);margin-top:8px}
+.tab{width:100%;border-collapse:collapse;font-size:15.5px}
+.tab td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top;color:#c4d0de;line-height:1.35}
+.tab td:first-child{width:110px;color:var(--c2);font-weight:700}
+/* celular */
+.fones{display:flex;gap:22px;justify-content:center;align-items:flex-start}
+.fone{width:250px;border-radius:26px;padding:7px;background:#1b2634;border:1px solid #38506d;box-shadow:0 14px 40px rgba(0,0,0,.55)}
+.fone img{width:100%;display:block;border-radius:20px}
+/* fim */
+.fim{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 90px}
+.fim h2{margin:26px 0 30px;font-size:30px}
+.cred{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;width:100%;max-width:1060px}
+.cred div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.cred b{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--c)}.cred span{font-size:15px;line-height:1.35}
+.peq2{margin-top:22px;font-size:13px;color:var(--mut);max-width:760px}
+.aviso-final{margin-top:20px;font-size:15px;color:var(--am);border:1px dashed rgba(255,200,87,.6);border-radius:10px;padding:8px 18px}
+/* gráficos de consumo (SVG feito à mão) */
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.kpi{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kpi b{display:block;font-size:28px;font-weight:800;color:var(--c);line-height:1.05}
+.kpi span{display:block;font-size:13px;color:#c4d0de;line-height:1.3;margin-top:4px}
+.kpi .tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:1px 7px;border-radius:99px;margin-top:6px}
+.tag.med{color:var(--ok);border:1px solid rgba(47,211,154,.5)}.tag.est{color:var(--am);border:1px solid rgba(255,200,87,.55)}
+.painel-g{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.graf{display:block;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif}
+.graf .gt{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;fill:#00b2ff}
+.graf .gl{font-size:14.5px;fill:#dbe4ee}.graf .gv{font-size:14.5px;font-weight:700;fill:#fff}
+.graf .gn{font-size:13px;fill:#9fb2c6}.graf .gok{font-size:14px;font-weight:700;fill:#2fd39a}.graf .gam{font-size:13px;fill:#ffc857}
+.esq .caixa p{font-size:14.5px}
+</style></head>
+<body>
+<section class="slide" id="p1">
+<div class="capa">
+  <div class="capa-txt">
+    <div class="marca"><span class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6EE2FF"/><stop offset="55%" stop-color="#00B2FF"/><stop offset="100%" stop-color="#0057D6"/></linearGradient></defs><path d="M 128,24 L 218.07,76 L 218.07,180 L 128,232 L 37.93,180 L 37.93,76 Z" fill="none" stroke="url(#lg)" stroke-width="16" stroke-linejoin="round"/><g stroke="url(#lg)" stroke-width="12" stroke-linecap="round" fill="none"><path d="M 90,150 L 128,100 L 166,150 M 90,150 L 166,150"/></g><g fill="url(#lg)"><circle cx="128" cy="100" r="17"/><circle cx="90" cy="150" r="17"/><circle cx="166" cy="150" r="17"/></g></svg>
+</span><span>Cérebro <em>do Projeto</em></span></div>
+    <h1>O gestor visual dos seus projetos com <em>Claude Code</em></h1>
+    <p class="sub">Veja quem está trabalhando, confira o que cada agente entregou, passe tarefas ao gestor, guarde as decisões e a memória e acompanhe o custo. Com backup das conversas. Tudo no seu computador.</p>
+    <div class="pilulas"><span>Local</span><span>Sem conta</span><span>Sem nuvem</span><span>Sem telemetria</span><span>Licença MIT</span><span>Versão 1.3.0</span></div>
+  </div>
+  <div class="capa-img"><img src="img/agentes-ao-vivo-ganchos.png" alt=""></div>
+</div></section>
+<section class="slide" id="p2">
+<div class="cab"><span class="kick">O problema</span><h2>Projetos com IA crescem. E você enxerga cada vez menos.</h2></div>
+<div class="corpo cheio">
+  <div class="grade c5">
+    <div class="cartao dor"><div class="num">01</div><h3>Agentes trabalham sem você ver</h3><p>Subagentes abrem, leem, escrevem e fecham. Quando você percebe, já terminaram.</p></div>
+    <div class="cartao dor"><div class="num">02</div><h3>Tokens custam</h3><p>Todo contexto repetido e todo modelo grande demais para a tarefa vira conta no fim do mês.</p></div>
+    <div class="cartao dor"><div class="num">03</div><h3>Decisões se perdem</h3><p>"Cupons não acumulam." Dito numa conversa, esquecido na próxima.</p></div>
+    <div class="cartao dor"><div class="num">04</div><h3>A qualidade cai</h3><p>Sem conferência, entra no projeto trabalho que ninguém verificou.</p></div>
+    <div class="cartao dor"><div class="num">05</div><h3>O mapa some</h3><p>Com tanto código novo, ninguém mais sabe como as partes se ligam.</p></div>
+  </div>
+  <div class="faixa">Falta um lugar só para <b>ver</b>, <b>conferir</b>, <b>lembrar</b> e <b>medir</b>.</div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>2 / 44</span></div></section>
+<section class="slide" id="p3">
+<div class="cab"><span class="kick">A ideia</span><h2>Um cérebro local por projeto. Um gestor que delega e confere.</h2></div>
+<div class="corpo">
+<svg class="diag" viewBox="0 0 1200 470" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6ee2ff"/><stop offset=".55" stop-color="#00b2ff"/><stop offset="1" stop-color="#0057d6"/></linearGradient>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#00b2ff"/></marker>
+    <marker id="ar2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a93ff"/></marker>
+  </defs>
+  <!-- gestor -->
+  <rect x="380" y="0" width="440" height="84" rx="16" fill="url(#g1)"/>
+  <text x="600" y="36" text-anchor="middle" class="t1" fill="#04121c">GESTOR</text>
+  <text x="600" y="62" text-anchor="middle" class="t2" fill="#04121c">você + o melhor modelo (a conversa principal)</text>
+  <!-- agentes -->
+  <g class="ag">
+    <rect x="30" y="150" width="330" height="104" rx="14"/><text x="195" y="184" text-anchor="middle" class="t3">Mecânico → Haiku</text><text x="195" y="212" text-anchor="middle" class="t4">textos, buscas, documentação</text><text x="195" y="236" text-anchor="middle" class="t5">gestor confere uma amostra</text>
+    <rect x="435" y="150" width="330" height="104" rx="14"/><text x="600" y="184" text-anchor="middle" class="t3">Código comum → Sonnet</text><text x="600" y="212" text-anchor="middle" class="t4">implementar, corrigir, testar</text><text x="600" y="236" text-anchor="middle" class="t5">gestor confere o diff e roda os testes</text>
+    <rect x="840" y="150" width="330" height="104" rx="14"/><text x="1005" y="184" text-anchor="middle" class="t3">Crítico → Opus</text><text x="1005" y="212" text-anchor="middle" class="t4">arquitetura, segurança, login, pagamento</text><text x="1005" y="236" text-anchor="middle" class="t5">modelo maior revisa linha a linha</text>
+  </g>
+  <path d="M520,84 C470,120 300,110 230,148" class="seta"/><path d="M600,84 L600,148" class="seta"/><path d="M680,84 C730,120 900,110 970,148" class="seta"/>
+  <text x="600" y="128" text-anchor="middle" class="t5" fill="#8fa3b8">delega por tipo de tarefa</text>
+  <!-- fila -->
+  <rect x="300" y="300" width="360" height="64" rx="14" class="fila"/><text x="480" y="328" text-anchor="middle" class="t3" fill="#ffc857">A conferir</text><text x="480" y="351" text-anchor="middle" class="t5" fill="#d6dde6">nada entra no projeto sem conferência</text>
+  <rect x="780" y="300" width="300" height="64" rx="14" class="proj"/><text x="930" y="328" text-anchor="middle" class="t3">Projeto</text><text x="930" y="351" text-anchor="middle" class="t5" fill="#d6dde6">só o que foi aprovado ou corrigido</text>
+  <path d="M195,254 C195,290 240,320 298,328" class="seta"/><path d="M600,254 L520,298" class="seta"/><path d="M1005,254 C1005,280 960,285 930,298" class="seta"/>
+  <path d="M662,332 L778,332" class="seta"/>
+  <path d="M480,300 C480,280 520,270 560,262" class="seta2" style="display:none"/>
+  <!-- memória -->
+  <rect x="30" y="406" width="1140" height="64" rx="14" class="mem"/>
+  <text x="600" y="434" text-anchor="middle" class="t3" fill="#a9b3ff">CÉREBRO · memória persistente no centro</text>
+  <text x="600" y="457" text-anchor="middle" class="t5" fill="#d6dde6">decisões e regras · memória do Claude Code · mapa do código · custos · histórico de conferências</text>
+</svg>
+<div class="rodape-d">O Cérebro não troca o Claude Code: ele <b>enxerga e organiza</b> o trabalho que você já faz lá. O que já foi decidido e verificado fica guardado e não precisa ser explicado de novo.</div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>3 / 44</span></div></section>
+<section class="slide" id="p4">
+<div class="cab"><span class="kick">O que tem</span><h2>Um painel, vinte e quatro funções</h2></div>
+<div class="corpo cheio"><div class="grade c6"><div class="mini"><b>Painel geral</b><span>todos os projetos e o que precisa de você</span></div><div class="mini"><b>Primeiro uso</b><span>passos guiados, ganchos recomendados</span></div><div class="mini"><b>Visão geral</b><span>números, gestora e fila</span></div><div class="mini novo"><b>Agentes ao vivo</b><span>na hora pelos ganchos, anéis 5 h e semana</span></div><div class="mini"><b>A conferir</b><span>revisão e % aprovado de primeira</span></div><div class="mini novo"><b>Tarefas</b><span>você pede, o gestor recebe; também no mapa</span></div><div class="mini novo"><b>Sessão gestora</b><span>conversa longa sem toque, com capítulos</span></div><div class="mini novo"><b>Manual do gestor</b><span>GESTOR.md lido sozinho pela gestora</span></div><div class="mini novo"><b>Memória e decisões</b><span>editar, compactar, avisos, passa-bastão</span></div><div class="mini novo"><b>Custos e orçamento</b><span>limites por dia, semana e mês</span></div><div class="mini"><b>Mapa</b><span>o código em departamentos</span></div><div class="mini novo"><b>Explicar com IA</b><span>uma frase por ponto, só no clique</span></div><div class="mini novo"><b>Ferramentas</b><span>lista fechada, Rodar e Instalar</span></div><div class="mini"><b>Análise</b><span>propostas sem IA, você decide</span></div><div class="mini"><b>Novidades</b><span>versões novas, só GET público</span></div><div class="mini novo"><b>Inventário e encaixe</b><span>aplicar com prévia e Desfazer</span></div><div class="mini novo"><b>Backup</b><span>um .zip por dia e restauração sem apagar</span></div><div class="mini novo"><b>Rotinas no Windows</b><span>rodam com o painel fechado</span></div><div class="mini novo"><b>Avisos no Windows</b><span>quando algo precisa de você</span></div><div class="mini"><b>Configurações</b><span>gestora, preços, agentes por tipo</span></div><div class="mini"><b>Celular</b><span>telas que se ajustam</span></div><div class="mini"><b>Linha de comando</b><span>o gestor registra sem abrir a página</span></div><div class="mini novo"><b>Verificação no GitHub</b><span>testes a cada envio</span></div><div class="mini"><b>Demonstração</b><span>dados fictícios, nada seu</span></div></div>
+<div class="faixa suave">Em verde, o que chegou na <b>1.3.0</b>. Nas próximas páginas: uma foto real da demonstração (dados fictícios), o que faz, um exemplo e o benefício.</div></div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>4 / 44</span></div></section>
+<section class="slide" id="n13">
+<div class="cab"><span class="kick">Novo na 1.3.0</span><h2>Mais proteção, mais controle, a gestora sempre em dia</h2></div>
+<div class="corpo cheio"><div class="grade c4 novidades13"><div class="cartao peq"><h3>Backup e restauração</h3><p>Um .zip por dia das conversas e da memória, fora das pastas do Claude Code. Restaurar nunca apaga.</p></div><div class="cartao peq"><h3>Rotinas no Windows</h3><p>Backup, análise, novidades e mapa pelo Agendador, mesmo com o painel fechado.</p></div><div class="cartao peq"><h3>Memória mais forte</h3><p>Editar, criar, arquivar, compactar sem IA, avisos de memória velha e passa-bastão.</p></div><div class="cartao peq"><h3>Conversa longa sem toque</h3><p>Capítulo gravado e resumo devolvido em cada compactação automática. Manual do gestor automático.</p></div><div class="cartao peq"><h3>Agentes na hora</h3><p>Ganchos do Claude Code: &quot;usando X&quot;, &quot;precisa de você&quot; e anéis de 5 h e da semana.</p></div><div class="cartao peq"><h3>Avisos no Windows</h3><p>Item a conferir, Claude Code esperando, sessão terminada, orçamento estourado.</p></div><div class="cartao peq"><h3>Tarefas para o gestor</h3><p>Crie na aba Tarefas ou no mapa. A gestora recebe como contexto.</p></div><div class="cartao peq"><h3>Orçamento</h3><p>Limites em US$ por dia, semana e mês, por projeto ou geral. Só avisa.</p></div><div class="cartao peq"><h3>Instalar e encaixar</h3><p>Instalar ferramentas e aplicar o plano de encaixe, com prévia, cópia e Desfazer.</p></div><div class="cartao peq"><h3>Explicação por IA</h3><p>Uma frase simples para os pontos do mapa sem texto, com estimativa antes.</p></div><div class="cartao peq"><h3>Verificação no GitHub</h3><p>ruff, testes e prova do instalador a cada envio, no Windows e no Linux.</p></div><div class="cartao peq"><h3>Painel dashboard</h3><p>Barra lateral, área principal sem rolagem, mapa no centro e o controle Espaço.</p></div></div>
+<div class="faixa suave">Regra de tudo o que é novo: o que escreve fora de <code>~/.cerebro</code> só acontece com o <b>seu clique de confirmação</b>, mostrando antes o que muda, com cópia e sem apagar nada seu.</div></div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>5 / 44</span></div></section>
+<section class="slide" id="p5">
+<div class="cab"><span class="kick">Painel geral</span><h2>Todos os projetos numa tela só</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Cada projeto que você abre no Claude Code aparece sozinho, com um cartão.</p>
+    <h4>O que faz</h4><ul><li>Ramo, último commit, sessões recentes e agentes escrevendo agora</li><li>Custo de hoje e dos últimos 7 dias</li><li><b>Precisa de você</b>, no pé da barra lateral, abre uma gaveta com o que espera uma decisão sua</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Dois subagentes terminaram e ninguém conferiu. O número de <b>Precisa de você</b> sobe e, na gaveta, <b>Abrir</b> leva direto à fila.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>Você começa o dia sabendo o que pede sua atenção, sem abrir conversa por conversa.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="../imagens/hub.png" alt=""><i class="b" style="left:11.1%;top:92.4%">1</i><i class="b" style="left:6.8%;top:13.8%">2</i><i class="b" style="left:65.3%;top:34.9%">3</i><i class="b" style="left:92.4%;top:16.1%">4</i></div><ol class="leg"><li><i>1</i><span><b>Precisa de você</b>: o número de pendências; o clique abre a gaveta com cada uma e o botão <b>Abrir</b></span></li><li><i>2</i><span>Barra lateral: todos os projetos, com o selo <b>a conferir</b></span></li><li><i>3</i><span>Um cartão por projeto: pasta, ramo, commit, custo, gestora</span></li><li><i>4</i><span>Faixa <b>Cérebro atualizado</b>, recolhida até você abrir</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>6 / 44</span></div></section>
+<section class="slide" id="p6">
+<div class="cab"><span class="kick">Primeiro uso</span><h2>Seis passos e o painel está pronto</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Na primeira abertura aparece a faixa <b>Primeiro uso</b>, que leva à tela Bem-vindo.</p>
+    <h4>O que faz</h4><ul><li>Passos: seus projetos, sessão gestora, mapa, comandos sugeridos, <b>ganchos (recomendado)</b> e pronto</li><li>Dá para pular o que quiser e voltar depois</li><li>Cada passo explica o que vai acontecer antes de você clicar</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>No passo do mapa, o Graphify roda dentro do projeto <b>só quando você clica</b> em gerar.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>Sem manual: o próprio painel conduz, e nada acontece escondido.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="../imagens/bem-vindo.png" alt=""><i class="b" style="left:74.4%;top:19.9%">1</i><i class="b" style="left:37.4%;top:28.7%">2</i><i class="b" style="left:56.4%;top:47.2%">3</i><i class="b" style="left:79.2%;top:67.0%">4</i></div><ol class="leg"><li><i>1</i><span>As seis etapas, sempre visíveis</span></li><li><i>2</i><span>O que acontece, dito com clareza</span></li><li><i>3</i><span>Os projetos achados (só leitura)</span></li><li><i>4</i><span>Pular ou avançar, sem obrigação</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>7 / 44</span></div></section>
+<section class="slide" id="p7">
+<div class="cab"><span class="kick">Visão geral</span><h2>O resumo do projeto num olhar</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">A primeira seção de cada projeto, na barra lateral, junta os números e o que está em andamento.</p>
+    <h4>O que faz</h4><ul><li>Sessões, subagentes, agentes ativos, memórias, contexto fixo e custo</li><li>Atividade recente, com atalho <b>Ver</b> para o passo a passo</li><li>Cartão da sessão gestora e <b>fila do gestor</b></li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Você vê que 2 subagentes esperam conferência e que 1 tarefa aprovada ainda não foi feita.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>Estado do projeto em segundos, sem procurar em lugar nenhum.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="../imagens/visao-geral.png" alt=""><i class="b" style="left:95.4%;top:20.0%">1</i><i class="b" style="left:32.0%;top:38.6%">2</i><i class="b" style="left:77.3%;top:38.6%">3</i><i class="b" style="left:76.8%;top:60.2%">4</i><i class="b" style="left:14.3%;top:30.2%">5</i></div><ol class="leg"><li><i>1</i><span>Números do projeto, inclusive o contexto fixo por conversa</span></li><li><i>2</i><span>Atividade recente: sessões e subagentes</span></li><li><i>3</i><span>Sessão gestora do projeto</span></li><li><i>4</i><span>Fila do gestor: a conferir, tarefas aprovadas, propostas novas</span></li><li><i>5</i><span>Seções do projeto na barra lateral, com contadores</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>8 / 44</span></div></section>
+<section class="slide" id="p8">
+<div class="cab"><span class="kick">Sessão gestora e sessões</span><h2>A gestora nunca é trocada. Ela se renova.</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">A <b>gestora</b> é a conversa principal: você mais o melhor modelo.</p>
+    <h4>O que faz</h4><ul><li>Conversa longa sem toque seu: antes de cada <b>compactação automática</b> grava um <b>capítulo</b> e logo depois devolve o resumo</li><li>Capítulo: onde parou, pergunta pendente, seus pedidos, ramo e commits. Limpar a conversa na mesma sessão é opcional (desligado)</li><li>A seção <b>Sessões</b> mostra, em abas internas, as conversas e a corrente (anterior → atual) com os capítulos</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Conversa longa? O botão <b>Gerar resumo</b> monta o passa-bastão, sem IA. Transcrição antiga só sai se você autorizar, depois de 7 dias e com backup conferido.</p></div><div class="caixa ben"><b>Benefício</b><p>Continuidade sem perder o fio: memória, decisões e capítulos ficam para sempre.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/sessoes-capitulos.png" alt=""><i class="b" style="left:46.8%;top:26.9%">1</i><i class="b" style="left:22.8%;top:38.0%">2</i><i class="b" style="left:22.8%;top:48.7%">3</i><i class="b" style="left:52.9%;top:55.7%">4</i><i class="b" style="left:36.8%;top:61.7%">5</i><i class="b" style="left:23.6%;top:15.2%">6</i></div><ol class="leg"><li><i>1</i><span>Contexto da gestora agora</span></li><li><i>2</i><span>Transcrição <b>anterior</b>, com o capítulo da troca</span></li><li><i>3</i><span>A <b>atual</b>, na mesma sessão</span></li><li><i>4</i><span>Limpeza de transcrições antigas: só com a sua autorização</span></li><li><i>5</i><span>Linha do tempo dos capítulos</span></li><li><i>6</i><span>Abas internas: a lista de <b>Sessões</b> (passa-bastão) e a <b>Corrente da gestora</b></span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>9 / 44</span></div></section>
+<section class="slide" id="n-manual">
+<div class="cab"><span class="kick">Manual do gestor</span><h2>A gestora aprende a usar o Cérebro sozinha</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">O Cérebro escreve um manual curto, o <code>~/.cerebro/GESTOR.md</code> (menos de 1.500 tokens).</p>
+    <h4>O que faz</h4><ul><li>Comandos, como delegar e conferir, e o que fazer em conversa longa</li><li>Refeito a cada versão; o painel mostra <b>Cérebro atualizado</b> e cada gestora recebe o aviso uma vez</li><li><b>Manual do gestor neste projeto</b>: um bloco no <code>CLAUDE.local.md</code>, que fica fora do git</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Ligou no projeto da loja: a próxima conversa já sabe registrar decisões e conferir subagentes.</p></div><div class="caixa ben"><b>Benefício</b><p>Você não precisa explicar o fluxo a cada conversa nova.</p></div>
+  </div>
+  <div class="dir" style="width:540px"><div class="shot" style="aspect-ratio:1086/255"><div class="rec"><img src="img/cerebro-atualizado.png" alt="" style="width:125.7827%;left:-23.9411%;top:-40.3922%"></div><i class="b" style="left:92.3%;top:8.1%">1</i><i class="b" style="left:42.3%;top:92.4%">2</i></div><div style="height:8px"></div><div class="shot" style="aspect-ratio:920/558"><div class="rec"><img src="img/manual-gestor.png" alt="" style="width:148.4783%;left:-24.2391%;top:-18.8172%"></div><i class="b" style="left:43.3%;top:5.0%">3</i><i class="b" style="left:96.2%;top:39.4%">4</i><i class="b" style="left:96.2%;top:75.9%">5</i><i class="b" style="left:11.5%;top:92.7%">6</i></div><ol class="leg"><li><i>1</i><span>Faixa <b>Cérebro atualizado</b>: o que mudou para o gestor</span></li><li><i>2</i><span>Cada gestora recebe o aviso uma vez</span></li><li><i>3</i><span>Ligar o manual no projeto</span></li><li><i>4</i><span>Prévia: o bloco no <code>CLAUDE.local.md</code></span></li><li><i>5</i><span>O arquivo fica fora do git (só neste PC)</span></li><li><i>6</i><span>Confirmar: só depois de ver</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>10 / 44</span></div></section>
+<section class="slide" id="p9">
+<div class="cab"><span class="kick">Mapa</span><h2>O código como um mapa vivo</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Um grafo 2D do projeto, em departamentos coloridos. O motor é o Graphify, opcional.</p>
+    <h4>O que faz</h4><ul><li>Você define os departamentos por pasta, curinga ou expressão regular</li><li>Clique num ponto para ler sobre ele no painel lateral; há também linha do tempo</li><li>Se atualiza sozinho quando o <code>graph.json</code> muda e avisa se o mapa está mais velho que o último commit</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Loja dividida em Vitrine, Compra e Operação: dá para ver as ligações entre departamentos antes de pedir uma mudança grande.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>Entender a estrutura sem abrir arquivo por arquivo.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="../imagens/mapa.png" alt=""><i class="b" style="left:78.2%;top:25.8%">1</i><i class="b" style="left:31.3%;top:75.3%">2</i><i class="b" style="left:42.3%;top:16.3%">3</i><i class="b" style="left:74.0%;top:14.6%">4</i><i class="b" style="left:85.3%;top:17.2%">5</i><i class="b" style="left:51.2%;top:74.9%">6</i></div><ol class="leg"><li><i>1</i><span>Números do mapa (recolhe no botão <b>#</b>)</span></li><li><i>2</i><span>Legenda dos departamentos, recolhível</span></li><li><i>3</i><span>Alternar Cérebro/Painel e buscar (tecla <b>/</b>)</span></li><li><i>4</i><span>Atualizar, <b>Explicar com IA</b> e <b>Tela cheia</b></span></li><li><i>5</i><span><b>− Espaço +</b>: afasta ou aproxima as bolinhas</span></li><li><i>6</i><span>O grafo no centro: arraste, dê zoom, clique num ponto</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>11 / 44</span></div></section>
+<section class="slide" id="n-mapa-ia">
+<div class="cab"><span class="kick">Mapa · explicação por IA</span><h2>Cada ponto do código com uma frase simples</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">A maioria das funções não tem texto. O botão <b>Explicar com IA</b> abre uma gaveta que pede ao Haiku uma frase para cada uma.</p>
+    <h4>O que faz</h4><ul><li>Mostra antes a <b>estimativa</b>: pontos, chamadas e tokens</li><li>Vai só um trecho curto, com segredos mascarados; <code>.env</code> e chaves são pulados</li><li>A frase aparece marcada como <b>explicação automática (IA)</b></li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Clicou em <code>avisar_pedido_enviado()</code>: o painel diz o que ela faz e oferece <b>Criar tarefa aqui</b>.</p></div><div class="caixa aviso"><b>Atenção</b><p>Gasta tokens do seu plano e só roda quando você clica. Pode errar, por isso o rótulo.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/mapa-explicacao-ia.png" alt=""><i class="b" style="left:42.3%;top:16.3%">1</i><i class="b" style="left:59.4%;top:23.6%">2</i><i class="b" style="left:81.2%;top:49.3%">3</i><i class="b" style="left:94.7%;top:85.9%">4</i><i class="b" style="left:40.7%;top:61.2%">5</i><i class="b" style="left:85.3%;top:17.2%">6</i></div><ol class="leg"><li><i>1</i><span>Buscar grupo, arquivo ou função</span></li><li><i>2</i><span>Quanto do mapa está explicado (+ por IA)</span></li><li><i>3</i><span>Explicação automática (IA)</span></li><li><i>4</i><span><b>Criar tarefa aqui</b>, já com o ponto do código</span></li><li><i>5</i><span>O ponto escolhido e as ligações dele</span></li><li><i>6</i><span><b>− Espaço +</b> entre as bolinhas</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>12 / 44</span></div></section>
+<section class="slide" id="p10">
+<div class="cab"><span class="kick">Agentes ao vivo</span><h2>Veja cada agente trabalhando, na hora</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Árvore de sessão e subagentes em tempo real. Só leitura.</p>
+    <h4>O que faz</h4><ul><li>Estado (trabalhando, parado, terminou), modelo, tempo, tokens e a regra aplicada</li><li>Com os <b>ganchos</b> ligados: muda na hora, mostra &quot;usando X&quot; e &quot;precisa de você&quot;; se o Cérebro estiver fechado, o gancho o liga</li><li><b>Anéis de limite</b> de 5 horas e da semana na barra de cima, em todas as páginas</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>O Claude Code pediu permissão para rodar um comando: o chip <b>precisa de você</b> aparece e o Windows avisa.</p></div><div class="caixa ben"><b>Benefício</b><p>Você vê o que os agentes fazem sem interromper nenhum e sabe quanto do limite já usou.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/agentes-ao-vivo-ganchos.png" alt=""><i class="b" style="left:59.8%;top:2.8%">1</i><i class="b" style="left:66.1%;top:14.4%">2</i><i class="b" style="left:35.3%;top:23.9%">3</i><i class="b" style="left:36.3%;top:37.9%">4</i><i class="b" style="left:65.8%;top:30.9%">5</i></div><ol class="leg"><li><i>1</i><span>Anéis: 5 horas, semana e contexto</span></li><li><i>2</i><span><b>ao vivo pelos hooks</b></span></li><li><i>3</i><span><b>precisa de você</b></span></li><li><i>4</i><span>&quot;usando Edit&quot;: a ferramenta agora</span></li><li><i>5</i><span>Passo a passo ao vivo do agente escolhido</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>13 / 44</span></div></section>
+<section class="slide" id="p11">
+<div class="cab"><span class="kick">A conferir</span><h2>Nada entra no projeto sem conferência</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Todo subagente que terminou espera aqui até o gestor marcar o resultado.</p>
+    <h4>O que faz</h4><ul><li>Marca: <b>aprovado</b>, <b>corrigido</b> ou <b>recusado</b>, com nota opcional</li><li>Conta quanto cada modelo <b>acerta de primeira</b></li><li>O que fica parado há mais de 24 h aparece em destaque e em <b>Precisa de você</b>, na barra lateral</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Na demonstração, o Haiku acertou 2 de 2 de primeira e o Sonnet 1 de 2. Dados fictícios, mas é esse o tipo de leitura.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>Com números reais, você escolhe o modelo mais barato que ainda acerta, sem abrir mão da revisão.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="../imagens/a-conferir.png" alt=""><i class="b" style="left:44.7%;top:15.2%">1</i><i class="b" style="left:20.2%;top:33.1%">2</i><i class="b" style="left:49.7%;top:37.5%">3</i><i class="b" style="left:77.7%;top:37.5%">4</i><i class="b" style="left:89.0%;top:30.0%">5</i></div><ol class="leg"><li><i>1</i><span>Abas: a conferir, conferidos e o <b>resumo</b> (% aprovado de primeira por modelo)</span></li><li><i>2</i><span>Regra aplicada e quem revisa</span></li><li><i>3</i><span>Nota opcional: o que foi conferido ou corrigido</span></li><li><i>4</i><span><b>Aprovado</b>, <b>Corrigido</b> ou <b>Recusado</b></span></li><li><i>5</i><span>Passo a passo do subagente</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>14 / 44</span></div></section>
+<section class="slide" id="n-tarefas">
+<div class="cab"><span class="kick">Tarefas para o gestor</span><h2>Você pede. A gestora recebe.</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Escreva o que quer que seja feito; a gestora recebe as tarefas novas como contexto da conversa.</p>
+    <h4>O que faz</h4><ul><li>Título, descrição, prioridade, tipo de agente (ou o Cérebro sugere) e o lugar do código</li><li>Estados: nova, recebida, em andamento, a conferir, feita, recusada, com histórico</li><li>Filtros, busca, páginas numeradas e contador na barra lateral e em Precisa de você</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>&quot;Revisar o cálculo de frete&quot;: a regra manda para o Opus e o gestor revisa linha a linha. Quando termina, você confere e marca <b>feita</b>.</p></div><div class="caixa ben"><b>Benefício</b><p>Nada fica esquecido numa conversa; você acompanha cada pedido até o fim.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/tarefas.png" alt=""><i class="b" style="left:18.0%;top:24.5%">1</i><i class="b" style="left:29.2%;top:21.4%">2</i><i class="b" style="left:76.2%;top:32.2%">3</i><i class="b" style="left:38.1%;top:39.7%">4</i><i class="b" style="left:29.9%;top:43.8%">5</i><i class="b" style="left:88.0%;top:45.0%">6</i></div><ol class="leg"><li><i>1</i><span>Nova tarefa</span></li><li><i>2</i><span>Filtros por estado</span></li><li><i>3</i><span>Estado e prioridade</span></li><li><i>4</i><span>Ponto do mapa ligado à tarefa</span></li><li><i>5</i><span>Tipo de agente → modelo → quem revisa</span></li><li><i>6</i><span>Marcar como feita ou recusar, com nota</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>15 / 44</span></div></section>
+<section class="slide" id="n-tarefa-mapa">
+<div class="cab"><span class="kick">Tarefas · direto do mapa</span><h2>Do ponto do código ao pedido em dois cliques</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">No mapa, escolha uma função, arquivo ou grupo e clique em <b>Criar tarefa aqui</b>.</p>
+    <h4>O que faz</h4><ul><li>O ponto do mapa já vai preenchido (arquivo e linha)</li><li>O Cérebro sugere o tipo de agente pelas palavras do pedido</li><li>No mesmo mapa, a gaveta <b>Explicar com IA</b> mostra a estimativa antes de gastar</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Na função do e-mail de pedido enviado: &quot;Pôr o código de rastreio no começo&quot;. Pronto, a gestora recebe.</p></div><div class="caixa ben"><b>Benefício</b><p>Pedidos precisos, sem ter de explicar onde fica cada coisa.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div style="display:flex;gap:10px;align-items:flex-start"><div style="width:300px;flex:none"><div class="shot" style="aspect-ratio:459/450"><div class="rec"><img src="img/mapa-explicar-cartao.png" alt="" style="width:297.6035%;left:-197.6035%;top:0.0000%"></div><i class="b" style="left:8.6%;top:44.9%">1</i><i class="b" style="left:8.6%;top:56.1%">2</i><i class="b" style="left:64.9%;top:86.7%">3</i><i class="b" style="left:31.3%;top:94.7%">4</i></div></div><div style="flex:1;min-width:0"><div class="shot" style="aspect-ratio:560/514"><div class="rec"><img src="img/mapa-criar-tarefa.png" alt="" style="width:243.9286%;left:-93.3929%;top:-36.5759%"></div><i class="b" style="left:51.2%;top:5.4%">5</i><i class="b" style="left:63.9%;top:49.5%">6</i><i class="b" style="left:93.2%;top:74.1%">7</i><i class="b" style="left:14.8%;top:90.3%">8</i></div></div></div><ol class="leg"><li><i>1</i><span>Quantos pontos sem texto e quantos já explicados</span></li><li><i>2</i><span>Estimativa de tokens antes de gastar</span></li><li><i>3</i><span>Pelo seu plano ou pela API</span></li><li><i>4</i><span>Explicar (e Parar)</span></li><li><i>5</i><span>Nova tarefa para o gestor</span></li><li><i>6</i><span>Onde mexer: o ponto do mapa</span></li><li><i>7</i><span>Tipo de agente (ou sugestão)</span></li><li><i>8</i><span>Criar tarefa</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>16 / 44</span></div></section>
+<section class="slide" id="p12">
+<div class="cab"><span class="kick">Memória e decisões</span><h2>O que foi decidido não se perde</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">A memória do Claude Code e as decisões do projeto, num lugar só.</p>
+    <h4>O que faz</h4><ul><li>Memória (<code>MEMORY.md</code>, um arquivo por fato) mais <code>CLAUDE.md</code> e <code>AGENTS.md</code>, com busca e filtros</li><li><b>Contexto fixo</b>: estimativa dos tokens que toda conversa paga antes de começar</li><li>Linha do tempo de decisões, regras e ideias, registradas na página ou pela linha de comando</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Registrou &quot;Cupons não acumulam&quot; como decisão. O gestor lista depois com <code>cerebro_cli.py decisoes</code>.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>Regras ficam à vista, e você enxerga o peso do que carrega em toda conversa.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="../imagens/memoria-e-decisoes.png" alt=""><i class="b" style="left:56.5%;top:15.2%">1</i><i class="b" style="left:51.3%;top:21.1%">2</i><i class="b" style="left:58.7%;top:17.8%">3</i><i class="b" style="left:27.0%;top:27.2%">4</i><i class="b" style="left:32.9%;top:97.0%">5</i></div><ol class="leg"><li><i>1</i><span>Abas internas: itens, decisões e regras, cuidar da memória, contexto fixo</span></li><li><i>2</i><span>Busca em toda a memória</span></li><li><i>3</i><span>Filtros: regras, decisões, planos, tipos e documentos</span></li><li><i>4</i><span>Cada item: REGRA/DECISÃO, data e tokens</span></li><li><i>5</i><span>Páginas numeradas no lugar da rolagem</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>17 / 44</span></div></section>
+<section class="slide" id="n-memoria">
+<div class="cab"><span class="kick">Memória mais forte</span><h2>Cuidar da memória sem medo de estragar</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">A aba <b>Cuidar da memória</b> cria, edita e arquiva memórias e aponta o que merece revisão.</p>
+    <h4>O que faz</h4><ul><li>Toda gravação mostra a diferença, guarda cópia e recusa se o Claude Code mexeu no arquivo no meio</li><li><b>Arquivar</b> move para <code>memory/_arquivo/</code>: nada é apagado</li><li>Avisos: memória velha que fala de &quot;em andamento&quot;, que cita arquivo que não existe ou que contradiz outra</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>A nota &quot;migração em andamento&quot; não muda há 95 dias: o aviso pede para você conferir. Nada muda sozinho.</p></div><div class="caixa ben"><b>Benefício</b><p>Memória limpa e confiável, sem regra perdida.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/memoria-cuidar.png" alt=""><i class="b" style="left:55.6%;top:29.1%">1</i><i class="b" style="left:45.4%;top:36.7%">2</i><i class="b" style="left:40.6%;top:49.1%">3</i><i class="b" style="left:33.1%;top:18.2%">4</i></div><ol class="leg"><li><i>1</i><span>Nova memória, propor compactação e memória a conferir</span></li><li><i>2</i><span>Cita arquivo que não existe mais</span></li><li><i>3</i><span>Memória velha falando de estado</span></li><li><i>4</i><span>Decisões: editar e arquivar (aba Decisões e regras)</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>18 / 44</span></div></section>
+<section class="slide" id="n-compactar">
+<div class="cab"><span class="kick">Memória mais forte · compactar e passar o bastão</span><h2>Menos tokens por conversa, nenhuma regra a menos</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro"><b>Propor compactação do índice</b> encurta o <code>MEMORY.md</code> sem IA, e prova antes de gravar.</p>
+    <h4>O que faz</h4><ul><li>Linhas com palavra de regra (&quot;nunca&quot;, &quot;sempre&quot;, &quot;só&quot;, &quot;não&quot;...) ficam inteiras, letra por letra</li><li>Um verificador confere 10 garantias e mostra o antes e o depois</li><li><b>Passa-bastão</b>: conversa longa ganha um resumo pronto para continuar noutra, sem IA</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Na demonstração: de cerca de 294 para 230 tokens em toda conversa, só encurtando dois textos longos.</p></div><div class="caixa ben"><b>Benefício</b><p>Economia que se repete em cada conversa, sem perder o que foi decidido.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/memoria-compactar.png" alt=""><i class="b" style="left:42.0%;top:35.9%">1</i><i class="b" style="left:85.3%;top:35.8%">2</i><i class="b" style="left:34.5%;top:42.6%">3</i><i class="b" style="left:25.3%;top:57.8%">4</i><i class="b" style="left:39.4%;top:51.2%">5</i></div><ol class="leg"><li><i>1</i><span>Tokens antes → depois</span></li><li><i>2</i><span>Quanto economiza</span></li><li><i>3</i><span>Verificador das garantias</span></li><li><i>4</i><span>Antes e depois, lado a lado</span></li><li><i>5</i><span>As 10 garantias, uma por página</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>19 / 44</span></div></section>
+<section class="slide" id="p13">
+<div class="cab"><span class="kick">Custos e orçamento</span><h2>Para onde vão os tokens, e até onde podem ir</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Soma o uso das mensagens e multiplica pela tabela de preços (estimativa pelo preço de lista).</p>
+    <h4>O que faz</h4><ul><li>Entrada, saída e cache por modelo, sessão, subagente e dia</li><li><b>Orçamento</b> por dia, semana e mês, por projeto ou geral, com barra e projeção do mês</li><li>Aviso a partir de 80% (ajustável) no painel e no Windows, no máximo 1 vez por dia</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>A loja passou do limite da semana: a barra fica vermelha e o aviso aparece em Precisa de você.</p></div><div class="caixa ben"><b>Benefício</b><p>Você decide com dado. O Cérebro só avisa, nunca bloqueia; pode diferir da fatura.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/custos-orcamento.png" alt=""><i class="b" style="left:38.4%;top:31.4%">1</i><i class="b" style="left:19.3%;top:47.7%">2</i><i class="b" style="left:57.8%;top:62.9%">3</i><i class="b" style="left:19.3%;top:67.1%">4</i><i class="b" style="left:93.8%;top:40.6%">5</i><i class="b" style="left:25.9%;top:15.6%">6</i></div><ol class="leg"><li><i>1</i><span>Abas: por dia, <b>orçamento</b>, por modelo, sessão e subagente</span></li><li><i>2</i><span>Este projeto: passou do limite</span></li><li><i>3</i><span>Projeção do mês</span></li><li><i>4</i><span>Todos os projetos: perto do limite</span></li><li><i>5</i><span>Mudar limites (Configurações › Orçamento)</span></li><li><i>6</i><span>Custo total, tokens e cache</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>20 / 44</span></div></section>
+<section class="slide" id="n-consumo-medido">
+<div class="cab"><span class="kick">Num projeto real · medido</span><h2>Um dia de trabalho: 220 milhões de tokens, US$ 44 pelo preço de lista</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Um projeto real do autor, medido pelo próprio Cérebro: os tokens que o Claude Code grava em cada resposta, vezes a tabela de preços.</p>
+    <div class="kpis">
+      <div class="kpi"><b>220,4 mi</b><span>tokens no dia (entrada, saída e cache)</span><i class="tag med">medido</i></div>
+      <div class="kpi"><b>US$ 44,38</b><span>pelo preço de lista (pode diferir da fatura)</span><i class="tag med">medido</i></div>
+      <div class="kpi"><b>2 + 4</b><span>conversas da gestora + subagentes, 645 respostas</span><i class="tag med">medido</i></div>
+      <div class="kpi"><b>4 de 4</b><span>subagentes num modelo menor (Sonnet); a gestora no Opus</span><i class="tag med">medido</i></div>
+    </div>
+    <div class="caixa aviso"><b>Período curto</b><p>29/10/2026, das 11h30 às 18h18: o primeiro dia do Cérebro nesse projeto. É um dia, não uma média.</p></div>
+  </div>
+  <div class="dir" style="width:650px"><div class="painel-g">
+<svg class="graf" width="612" height="410" viewBox="0 0 612 410" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tokens e custo do dia por papel">
+  <text x="2" y="20" class="gt">Tokens no dia (milhões)</text>
+  <text x="0" y="52" class="gl">Gestora · Opus 5.5</text>
+  <rect x="190" y="34" width="96.7" height="26" rx="4" fill="#00b2ff"/>
+  <text x="296" y="52" class="gv">53,7 mi · 24%</text>
+  <text x="0" y="92" class="gl">Subagentes · Sonnet 5.5</text>
+  <rect x="190" y="74" width="300" height="26" rx="4" fill="#8a93ff"/>
+  <text x="500" y="92" class="gv">166,7 mi · 76%</text>
+  <text x="0" y="144" class="gt">Custo estimado (US$, preço de lista)</text>
+  <text x="0" y="180" class="gl">Gestora · Opus 5.5</text>
+  <rect x="190" y="162" width="207.2" height="26" rx="4" fill="#00b2ff"/>
+  <text x="407" y="180" class="gv">US$ 18,13</text>
+  <text x="0" y="220" class="gl">Subagentes · Sonnet 5.5</text>
+  <rect x="190" y="202" width="300" height="26" rx="4" fill="#8a93ff"/>
+  <text x="500" y="220" class="gv">US$ 26,25</text>
+  <line x1="0" y1="252" x2="612" y2="252" stroke="#22344a"/>
+  <text x="0" y="284" class="gt">Do que são feitos os 220,4 mi de tokens</text>
+  <rect x="0" y="298" width="603.6" height="28" fill="#00b2ff" opacity=".55"/>
+  <rect x="603.6" y="298" width="6.6" height="28" fill="#ffc857"/>
+  <rect x="610.2" y="298" width="1.8" height="28" fill="#2fd39a"/>
+  <rect x="0" y="342" width="12" height="12" rx="2" fill="#00b2ff" opacity=".55"/><text x="18" y="353" class="gl">Lido do cache 98,6%</text>
+  <rect x="178" y="342" width="12" height="12" rx="2" fill="#ffc857"/><text x="196" y="353" class="gl">Gravado no cache 1,1%</text>
+  <rect x="372" y="342" width="12" height="12" rx="2" fill="#2fd39a"/><text x="390" y="353" class="gl">Escrito pelo modelo 0,3%</text>
+  <text x="0" y="380" class="gn">Entrada nova: menos de 0,01%. O cache é do próprio Claude Code: não é mérito do Cérebro.</text>
+  <text x="0" y="402" class="gn">Fonte: o uso gravado em cada resposta das conversas, somado pelo Cérebro.</text>
+</svg></div></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>21 / 44</span></div></section>
+<section class="slide" id="n-consumo-estimado">
+<div class="cab"><span class="kick">Num projeto real · estimado</span><h2>O que a delegação e a memória enxuta economizam</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Duas estimativas sobre o mesmo dia, com a conta aberta.</p>
+    <h4>Como foi estimado</h4><ul><li><b>Delegação:</b> os mesmos tokens dos subagentes com o preço do Opus. O mesmo trabalho no Opus poderia usar outra quantidade de tokens.</li><li><b>Memória:</b> a compactação que o Cérebro propõe (sem aplicar), vezes as 125 respostas da gestora em 2 conversas. Semana: 14 conversas (2 por dia).</li></ul>
+    <div class="caixa aviso"><b>De quem é o mérito</b><p>O Cérebro dá a regra tipo de tarefa → modelo → revisor e confere cada subagente. Neste dia, quem pôs os subagentes no Sonnet foi a configuração do Claude Code.</p></div>
+    <div class="caixa ben"><b>Resultado</b><p>Delegar custou cerca de 37% menos do que tudo no Opus. A memória já estava enxuta: compactar economiza pouco aqui.</p></div>
+  </div>
+  <div class="dir" style="width:650px"><div class="painel-g">
+<svg class="graf" width="612" height="430" viewBox="0 0 612 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Custo real comparado com tudo no Opus e contexto fixo por conversa">
+  <defs><pattern id="hachP" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#8a93ff" opacity=".25"/><line x1="0" y1="0" x2="0" y2="8" stroke="#8a93ff" stroke-width="3"/></pattern></defs>
+  <text x="0" y="18" class="gt">Custo do dia (US$, preço de lista)</text>
+  <text x="0" y="46" class="gl">Se os subagentes rodassem no Opus: <tspan class="gv">US$ 70,64</tspan> <tspan class="gam">(estimado)</tspan></text>
+  <rect x="0" y="56" width="154" height="30" rx="4" fill="#00b2ff"/>
+  <rect x="154" y="56" width="446" height="30" rx="4" fill="url(#hachP)" stroke="#8a93ff" stroke-width="1.2"/>
+  <text x="0" y="122" class="gl">Real, subagentes no Sonnet: <tspan class="gv">US$ 44,38</tspan> <tspan class="gok">(medido)</tspan></text>
+  <rect x="0" y="132" width="154" height="30" rx="4" fill="#00b2ff"/>
+  <rect x="154" y="132" width="223" height="30" rx="4" fill="#8a93ff"/>
+  <rect x="377" y="132" width="223" height="30" rx="4" fill="rgba(47,211,154,.10)" stroke="#2fd39a" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text x="488.5" y="152" text-anchor="middle" class="gok">−US$ 26,25 (−37%)</text>
+  <rect x="0" y="180" width="12" height="12" rx="2" fill="#00b2ff"/><text x="18" y="191" class="gn">Gestora (Opus 5.5): US$ 18,13</text>
+  <rect x="236" y="180" width="12" height="12" rx="2" fill="#8a93ff"/><text x="254" y="191" class="gn">Subagentes</text>
+  <rect x="350" y="180" width="12" height="12" rx="2" fill="none" stroke="#2fd39a" stroke-dasharray="3 2"/><text x="368" y="191" class="gn">Economia estimada</text>
+  <line x1="0" y1="214" x2="612" y2="214" stroke="#22344a"/>
+  <text x="0" y="244" class="gt">Contexto fixo de cada conversa (tokens)</text>
+  <text x="0" y="276" class="gl">Hoje</text>
+  <rect x="210" y="259" width="330" height="24" rx="4" fill="#00b2ff" opacity=".8"/>
+  <text x="548" y="276" class="gv">4.877</text>
+  <text x="0" y="312" class="gl">Com a compactação proposta</text>
+  <rect x="210" y="295" width="311" height="24" rx="4" fill="#2fd39a" opacity=".8"/>
+  <text x="529" y="312" class="gv">4.597</text>
+  <text x="0" y="346" class="gn">MEMORY.md + CLAUDE.md + AGENTS.md. A proposta tira 280 tokens do MEMORY.md (−12,4%),</text>
+  <text x="0" y="366" class="gn">encurtando 11 textos longos; nenhuma linha com regra muda.</text>
+  <text x="0" y="396" class="gl">Relido a cada resposta: ≈ 17,5 mil tokens e ≈ US$ 0,006 por conversa</text>
+  <text x="0" y="420" class="gl">Numa semana: ≈ 245 mil tokens e ≈ US$ 0,08 <tspan class="gam">(estimado)</tspan></text>
+</svg></div></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>22 / 44</span></div></section>
+<section class="slide" id="p14">
+<div class="cab"><span class="kick">Ferramentas</span><h2>Qualidade a um clique, só o que você aprovou</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">O Cérebro lê o projeto e <b>sugere</b> comandos. Você aprova o que quer.</p>
+    <h4>O que faz</h4><ul><li>Detecta 10 ferramentas só lendo: ruff, ESLint, clippy, gitleaks, Semgrep, pip-audit, cargo-deny, OSV-Scanner, coverage e Lighthouse</li><li>Só os comandos da <b>lista fechada</b> têm botão <b>Rodar</b></li><li>Sem shell, com tempo limite, saída mascarada, histórico das últimas 20 execuções</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Aprovou <code>python -m unittest discover</code>. Um clique roda e guarda a saída.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>Rodar verificações sem abrir terminal e sem risco de executar algo que você não aprovou.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="../imagens/ferramentas.png" alt=""><i class="b" style="left:43.9%;top:18.2%">1</i><i class="b" style="left:19.3%;top:43.9%">2</i><i class="b" style="left:30.7%;top:43.9%">3</i></div><ol class="leg"><li><i>1</i><span>Abas: permitidos, sugeridos, ferramentas no PC, histórico, resumo</span></li><li><i>2</i><span><b>Rodar</b>: só nos comandos aprovados</span></li><li><i>3</i><span>Ver a saída (mascarada) e o tempo limite</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>23 / 44</span></div></section>
+<section class="slide" id="n-instalar">
+<div class="cab"><span class="kick">Ferramentas · instalar</span><h2>Instalar o que falta, vendo o comando antes</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">As ferramentas não instaladas ganham o botão <b>Instalar…</b>.</p>
+    <h4>O que faz</h4><ul><li>Receitas fechadas no código: ruff, pip-audit, coverage, Semgrep, cargo-deny, gitleaks e Lighthouse</li><li>Mostra o comando exato, de onde vem, onde instala, tamanho e tempo</li><li>Sem shell, sem administrador, uma por vez, com histórico</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>pip-audit avisa de pacote Python com falha conhecida. Marque &quot;Conferi o comando&quot; e confirme.</p></div><div class="caixa ben"><b>Benefício</b><p>Qualidade e segurança sem decorar comandos e sem surpresa.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/ferramentas-instalar.png" alt=""><i class="b" style="left:86.0%;top:17.9%">1</i><i class="b" style="left:53.1%;top:71.7%">2</i><i class="b" style="left:67.4%;top:81.1%">3</i><i class="b" style="left:67.3%;top:94.4%">4</i><i class="b" style="left:47.3%;top:97.5%">5</i></div><ol class="leg"><li><i>1</i><span>O que não está instalado</span></li><li><i>2</i><span>Instalar…</span></li><li><i>3</i><span>Comando exato, sem shell</span></li><li><i>4</i><span>Conferi o comando</span></li><li><i>5</i><span>Confirmar e instalar (ou Cancelar)</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>24 / 44</span></div></section>
+<section class="slide" id="p15">
+<div class="cab"><span class="kick">Análise e autoevolução</span><h2>O projeto propõe como melhorar. Você decide.</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">O botão <b>Analisar agora</b> não usa IA, então não gasta tokens.</p>
+    <h4>O que faz</h4><ul><li>Olha git, mapa, ferramentas, custos, contexto fixo e a fila a conferir</li><li>Gera propostas com motivo, esforço (P/M/G) e risco</li><li>Aprovada vira <b>tarefa para o gestor</b>; descartada some. Nada é aplicado sozinho</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Achou um arquivo com mais de 1500 linhas e propõe dividir. Você aprova, o gestor faz e marca como feita.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>Melhoria contínua com você no comando. Pode rodar sozinha no intervalo que escolher, com o servidor aberto.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="../imagens/analise.png" alt=""><i class="b" style="left:18.0%;top:22.0%">1</i><i class="b" style="left:39.8%;top:34.5%">2</i><i class="b" style="left:87.2%;top:41.4%">3</i><i class="b" style="left:31.2%;top:54.4%">4</i></div><ol class="leg"><li><i>1</i><span>Analisar agora, com a última e a próxima</span></li><li><i>2</i><span>Abas: tarefas, propostas, decididas, relatório, histórico</span></li><li><i>3</i><span>Cada item traz esforço e risco</span></li><li><i>4</i><span>Marcar como feita (ou aprovar/descartar, nas propostas)</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>25 / 44</span></div></section>
+<section class="slide" id="p16">
+<div class="cab"><span class="kick">Vigia de novidades</span><h2>Versões novas, sem caçar notícia</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Procura versões novas do Claude Code, do Graphify e das ferramentas de qualidade.</p>
+    <h4>O que faz</h4><ul><li>Só um <code>GET</code> na API pública de releases do GitHub, sem login</li><li>Nada do seu projeto é enviado</li><li>Ferramenta instalada desatualizada vira proposta. Sem rede, avisa e não quebra</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Você clica em <b>Procurar novidades</b> e vê o que saiu desde a última vez.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>Fica por dentro do ecossistema sem sair do painel. Só roda quando você manda (ou se ligar a opção).</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="../imagens/novidades.png" alt=""><i class="b" style="left:18.0%;top:22.0%">1</i><i class="b" style="left:18.0%;top:15.6%">2</i><i class="b" style="left:20.0%;top:43.5%">3</i><i class="b" style="left:85.9%;top:39.2%">4</i></div><ol class="leg"><li><i>1</i><span>Procurar novidades: sempre sob demanda</span></li><li><i>2</i><span>Texto que diz exatamente o que sai do PC</span></li><li><i>3</i><span>Fontes acompanhadas e o que você já tem</span></li><li><i>4</i><span>Situação de cada fonte</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>26 / 44</span></div></section>
+<section class="slide" id="p17">
+<div class="cab"><span class="kick">Inventário e encaixe</span><h2>Encaixa no que o projeto já tem, e você aplica</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Antes de propor qualquer coisa, o Cérebro só <b>lê</b> o projeto.</p>
+    <h4>O que faz</h4><ul><li>Mostra o que existe: instruções, testes, lint, CI, ganchos, agentes, memória e mapa</li><li>Cada item do <b>plano de encaixe</b> tem <b>Ver o que muda e aplicar…</b>: arquivos e diferença antes</li><li>Só cria ou acrescenta um bloco marcado, guarda cópia e tem <b>Desfazer</b></li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Projeto sem <code>CLAUDE.md</code>: a prévia mostra o arquivo novo com o bloco do gestor. Você confere e aplica.</p></div><div class="caixa ben"><b>Benefício</b><p>Adoção sem bagunçar o que já funciona. Projetos ocultos e a lista <code>nunca_escrever</code> são recusados.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/inventario-encaixe.png" alt=""><i class="b" style="left:81.4%;top:7.4%">1</i><i class="b" style="left:69.9%;top:27.1%">2</i><i class="b" style="left:82.9%;top:33.0%">3</i><i class="b" style="left:89.9%;top:83.7%">4</i><i class="b" style="left:68.3%;top:87.8%">5</i></div><ol class="leg"><li><i>1</i><span>Ver o que muda e aplicar…</span></li><li><i>2</i><span>Arquivo novo ou bloco acrescentado</span></li><li><i>3</i><span>A diferença exata, antes de gravar</span></li><li><i>4</i><span>Conferi os arquivos e a diferença</span></li><li><i>5</i><span>Aplicar (só depois de conferir) ou Cancelar</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>27 / 44</span></div></section>
+<section class="slide" id="p18">
+<div class="cab"><span class="kick">Agentes por tipo de tarefa</span><h2>O modelo certo para cada trabalho</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Uma tabela simples: tipo de tarefa → modelo → quem revisa.</p>
+    <h4>O que faz</h4><ul><li>Padrão: crítico no Opus, código comum no Sonnet, mecânico no Haiku</li><li>A primeira regra que casa com a descrição da tarefa vale</li><li>Todo resultado passa pelo gestor, seja qual for o tipo</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>O botão <b>Gerar prévia</b> cria os arquivos de agente dentro de <code>~/.cerebro</code>. Copiar para <code>.claude/agents</code> do projeto é um passo à parte, com prévia e confirmação.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>O modelo barato faz o trabalho barato, o forte fica para o que importa, e a revisão continua.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/config-demo.png" alt=""><i class="b" style="left:52.3%;top:29.4%">1</i><i class="b" style="left:62.4%;top:29.4%">2</i><i class="b" style="left:69.8%;top:29.4%">3</i><i class="b" style="left:79.9%;top:29.4%">4</i><i class="b" style="left:52.8%;top:69.0%">5</i><i class="b" style="left:18.5%;top:28.8%">6</i></div><ol class="leg"><li><i>1</i><span>Tipo de tarefa</span></li><li><i>2</i><span>Modelo</span></li><li><i>3</i><span>Quem revisa</span></li><li><i>4</i><span>Palavras-chave (a primeira que casa vale)</span></li><li><i>5</i><span>Adicionar tipo e salvar a tabela</span></li><li><i>6</i><span>Menu de seções das Configurações</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>28 / 44</span></div></section>
+<section class="slide" id="p19">
+<div class="cab"><span class="kick">Configurações</span><h2>Tudo ajustável, tudo local</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Os ajustes ficam em <code>~/.cerebro/config.json</code>, fora do seu repositório.</p>
+    <h4>O que faz</h4><ul><li>Sessão gestora e apelido; projetos visíveis ou ocultos; adicionar uma pasta</li><li>Tabela de preços por milhão de tokens, editável</li><li>Rotinas, departamentos do mapa, tema, porta e encerrar o servidor</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Mudou o preço de um modelo? Edite a linha e salve. Os custos passam a usar o valor novo.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>O painel se adapta ao seu jeito de trabalhar, sem mexer em código.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="../imagens/configuracoes.png" alt=""><i class="b" style="left:18.5%;top:15.9%">1</i><i class="b" style="left:45.3%;top:19.5%">2</i><i class="b" style="left:36.2%;top:23.0%">3</i><i class="b" style="left:58.9%;top:21.3%">4</i></div><ol class="leg"><li><i>1</i><span>Menu de seções (as do projeto e as gerais)</span></li><li><i>2</i><span>Sessão gestora deste projeto</span></li><li><i>3</i><span>Apelido no lugar do título da conversa</span></li><li><i>4</i><span>Salvar</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>29 / 44</span></div></section>
+<section class="slide" id="p20">
+<div class="cab"><span class="kick">Configurações · rotinas e mapa</span><h2>Rotinas e departamentos sob controle</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Estas rotinas rodam com o servidor aberto, e só se você ligar. Para rodar com o painel fechado, veja <b>Rotinas no Windows</b>.</p>
+    <h4>O que faz</h4><ul><li>Análise automática a cada N dias (opcional)</li><li>Busca de novidades sozinha: desligada por padrão</li><li>Departamentos do mapa com nome, cor e caminhos; tema claro ou escuro; porta; tempo sem página aberta</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Defina <code>loja/carrinho, loja/pagamentos</code> como o departamento Compra e salve para refazer o mapa.</p></div>
+    <div class="caixa ben"><b>Benefício</b><p>Mapa e rotinas do jeito do projeto, sem nada escondido no sistema.</p></div>
+  </div>
+  <div class="dir" style="width:530px"><div class="shot" style="aspect-ratio:854/292"><div class="rec"><img src="img/config-rotinas.png" alt="" style="width:159.9532%;left:-57.6112%;top:-35.2740%"></div><i class="b" style="left:45.1%;top:8.9%">1</i></div><div style="height:8px"></div><div class="shot" style="aspect-ratio:854/443"><div class="rec"><img src="img/config-departamentos.png" alt="" style="width:159.9532%;left:-57.6112%;top:-22.5734%"></div><i class="b" style="left:52.0%;top:23.0%">2</i><i class="b" style="left:1.8%;top:39.1%">3</i><i class="b" style="left:83.8%;top:39.1%">4</i><i class="b" style="left:21.2%;top:91.5%">5</i></div><ol class="leg"><li><i>1</i><span>Rotinas: análise, novidades, vigia do mapa e janela da fila</span></li><li><i>2</i><span>Automático (pelas pastas) ou as suas regras</span></li><li><i>3</i><span>Departamento: nome, cor e caminhos</span></li><li><i>4</i><span>Remover o departamento</span></li><li><i>5</i><span>Salvar e refazer o mapa</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>30 / 44</span></div></section>
+<section class="slide" id="n-backup">
+<div class="cab"><span class="kick">Backup e restauração</span><h2>Suas conversas e a memória, guardadas fora do Claude Code</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Um <code>.zip</code> por dia com as conversas e a memória de todos os projetos e os dados do Cérebro.</p>
+    <h4>O que faz</h4><ul><li>Fica <b>fora</b> de <code>.claude</code> e <code>.cerebro</code> (padrão <code>~/CerebroBackup</code>); guarda 7 dias</li><li>Confere cada cópia (lista com SHA-256) e protege a boa se a nova vier bem menor</li><li><b>Restaurar</b>: mostra o que falta, o que mudou e o que só cresceu; devolve o que falta e só troca o resto se você marcar</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Uma conversa sumiu? Escolha o dia, veja o que mudaria e restaure. A versão de hoje vai antes para uma pasta de cópias.</p></div><div class="caixa ben"><b>Benefício</b><p>Nada é apagado. Se alguém apagar uma das pastas, o backup sobrevive.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/backup-restaurar.png" alt=""><i class="b" style="left:59.2%;top:26.6%">1</i><i class="b" style="left:47.7%;top:34.5%">2</i><i class="b" style="left:92.1%;top:43.5%">3</i><i class="b" style="left:80.9%;top:64.5%">4</i><i class="b" style="left:38.7%;top:75.0%">5</i><i class="b" style="left:37.5%;top:82.1%">6</i></div><ol class="leg"><li><i>1</i><span>Pasta do backup, fora das outras</span></li><li><i>2</i><span>Fazer backup agora e o último backup</span></li><li><i>3</i><span>Conferir e Restaurar…</span></li><li><i>4</i><span>O que mudaria: falta, diferente, cresceu</span></li><li><i>5</i><span>Trocar só o que você marcar</span></li><li><i>6</i><span>Restaurar: copia de volta, nada é apagado</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>31 / 44</span></div></section>
+<section class="slide" id="n-rotinas">
+<div class="cab"><span class="kick">Rotinas no Windows</span><h2>O que precisa rodar, roda, mesmo com o painel fechado</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Com o seu sim, o Cérebro cria tarefas no Agendador de Tarefas do Windows.</p>
+    <h4>O que faz</h4><ul><li>Backup diário (e ao entrar no Windows, se o PC estava desligado)</li><li>Análise a cada 7 dias, novidades a cada 3 e a página do mapa a cada 6 horas</li><li>Só tarefas da pasta <code>CerebroDoProjeto</code>, do seu usuário, sem senha e sem administrador</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Ligou o backup diário às 12:30: cada rotina guarda um registro e o último resultado, que aparece aqui.</p></div><div class="caixa aviso"><b>Atenção</b><p>Na demonstração o Agendador não é usado. No macOS e no Linux esta parte mostra &quot;só no Windows&quot;.</p></div>
+  </div>
+  <div class="dir" style="width:760px"><div class="shot" style="aspect-ratio:1366/768"><img src="img/config-backup-rotinas.png" alt=""><i class="b" style="left:45.2%;top:27.9%">1</i><i class="b" style="left:51.1%;top:29.3%">2</i><i class="b" style="left:63.6%;top:28.0%">3</i><i class="b" style="left:86.7%;top:33.0%">4</i><i class="b" style="left:66.1%;top:84.4%">5</i></div><ol class="leg"><li><i>1</i><span>Backup diário</span></li><li><i>2</i><span>Quando roda</span></li><li><i>3</i><span>Estado no Windows</span></li><li><i>4</i><span>Ligar no Windows (e Desligar)</span></li><li><i>5</i><span>Só a pasta CerebroDoProjeto, sem administrador</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>32 / 44</span></div></section>
+<section class="slide" id="n-ganchos">
+<div class="cab"><span class="kick">Agentes instantâneos e avisos</span><h2>Ganchos do Claude Code, ligados só com o seu sim</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Os <b>ganchos</b> fazem o Claude Code avisar o Cérebro na hora. Eles mexem no <code>settings.json</code>, por isso:</p>
+    <h4>O que faz</h4><ul><li><b>Ver o que muda</b> mostra a diferença exata; Ligar pede confirmação e guarda cópia antes</li><li>Preserva o que você já tinha; <b>Desligar</b> tira só as linhas do Cérebro</li><li><b>Avisos no Windows</b>: liga e desliga por tipo, &quot;não perturbe&quot; e <b>Testar aviso</b></li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Um subagente da gestora terminou: o Windows avisa que chegou item a conferir.</p></div><div class="caixa ben"><b>Benefício</b><p>Você não precisa ficar olhando a tela para saber quando é a sua vez.</p></div>
+  </div>
+  <div class="dir" style="width:505px"><div class="shot" style="aspect-ratio:854/323"><div class="rec"><img src="img/config-ganchos-avisos.png" alt="" style="width:159.9532%;left:-57.6112%;top:-31.8885%"></div><i class="b" style="left:8.1%;top:30.6%">1</i><i class="b" style="left:1.8%;top:71.8%">2</i><i class="b" style="left:31.5%;top:71.8%">3</i></div><div style="height:8px"></div><div class="shot" style="aspect-ratio:854/470"><div class="rec"><img src="img/config-avisos.png" alt="" style="width:159.9532%;left:-57.6112%;top:-21.9149%"></div><i class="b" style="left:16.9%;top:21.6%">4</i><i class="b" style="left:1.8%;top:55.4%">5</i><i class="b" style="left:20.8%;top:62.2%">6</i></div><ol class="leg"><li><i>1</i><span>Ganchos e statusLine ligados</span></li><li><i>2</i><span>Ver o que muda e Ligar</span></li><li><i>3</i><span>Desligar: tira só as linhas do Cérebro</span></li><li><i>4</i><span>Quais avisos você quer</span></li><li><i>5</i><span>Não perturbe por horário</span></li><li><i>6</i><span>Testar aviso</span></li></ol></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>33 / 44</span></div></section>
+<section class="slide" id="p21">
+<div class="cab"><span class="kick">Versão no celular</span><h2>Telas que se ajustam, sem rolar para o lado</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">Em janela estreita (testado em 390 px), o painel se reorganiza.</p>
+    <h4>O que faz</h4><ul><li>Painel geral, visão geral e ferramentas legíveis em tela pequena</li><li>Mesmas funções da versão larga</li><li>A barra lateral vira um menu ☰ e a página rola só para baixo</li></ul>
+    <div class="caixa ex"><b>Exemplo</b><p>Reduza a janela do navegador ao lado do editor e continue acompanhando a fila.</p></div>
+    <div class="caixa aviso"><b>Atenção</b><p>O servidor escuta só em <code>127.0.0.1</code>. O ajuste vale para janelas estreitas no próprio computador; o celular não acessa o painel.</p></div>
+  </div>
+  <div class="dir fones" style="width:800px"><div class="fone"><img src="../imagens/celular-hub.png" alt=""></div><div class="fone"><img src="../imagens/celular-visao-geral.png" alt=""></div><div class="fone"><img src="../imagens/celular-ferramentas.png" alt=""></div></div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>34 / 44</span></div></section>
+<section class="slide" id="p22">
+<div class="cab"><span class="kick">Linha de comando do gestor</span><h2>O gestor registra sem abrir a página</h2></div>
+<div class="corpo duas">
+  <div class="esq">
+    <p class="intro">A conversa principal pode conferir e registrar direto do terminal. Funciona com o servidor fechado e grava nos mesmos arquivos da página.</p>
+    <h4>O que faz</h4>
+    <ul><li><code>estado</code>, <code>a-conferir</code> e <code>conferir</code>: a fila de conferência</li><li><code>decisao</code>, <code>tarefas</code>, <code>tarefa --estado</code> e <code>orcamento</code></li><li><code>gestora limpar</code>: grava o capítulo antes da limpeza (opcional)</li><li><code>backup</code>, <code>agendar</code>, <code>memoria</code>, <code>hooks</code>, <code>encaixe</code>, <code>explicar</code></li></ul>
+    <div class="caixa ben"><b>Benefício</b><p>O gestor confere e registra no próprio fluxo, e você vê tudo no painel. O que escreve fora de <code>~/.cerebro</code> só grava com <code>--confirmar</code>.</p></div>
+  </div>
+  <div class="dir" style="width:700px">
+    <div class="term">
+      <div class="barra"><i></i><i></i><i></i><span>terminal</span></div>
+<pre><span class="c"># fila e contadores</span>
+python cerebro_cli.py estado <span class="a">&lt;projeto&gt;</span>
+python cerebro_cli.py a-conferir <span class="a">&lt;projeto&gt;</span>
+
+<span class="c"># conferir um subagente</span>
+python cerebro_cli.py conferir <span class="a">&lt;projeto&gt;</span> <span class="a">&lt;id-ou-descrição&gt;</span> \
+   --resultado aprovado|corrigido|recusado --nota "..."
+
+<span class="c"># registrar o que foi decidido</span>
+python cerebro_cli.py decisao <span class="a">&lt;projeto&gt;</span> "texto" \
+   --tipo decisao|regra|ideia --origem dono|gestor
+
+<span class="c"># tarefas e a gestora (limpar é opcional)</span>
+python cerebro_cli.py tarefas <span class="a">&lt;projeto&gt;</span> --novas
+python cerebro_cli.py tarefa <span class="a">&lt;projeto&gt;</span> <span class="a">&lt;id&gt;</span> --estado andamento
+python cerebro_cli.py gestora limpar <span class="a">&lt;projeto&gt;</span>
+
+<span class="c"># proteção (sem --confirmar, só a prévia)</span>
+python cerebro_cli.py backup --agora
+python cerebro_cli.py hooks --previa</pre>
+    </div>
+    <p class="peq"><code>&lt;projeto&gt;</code> aceita o nome, o slug ou o caminho.</p>
+  </div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>35 / 44</span></div></section>
+<section class="slide" id="n-github">
+<div class="cab"><span class="kick">Verificação automática</span><h2>Cada mudança testada sozinha no GitHub</h2></div>
+<div class="corpo cheio">
+  <div class="grade c3">
+    <div class="cartao"><div class="num">1</div><h3>ruff</h3><p>Procura erros de Python que quebrariam o painel (nome errado, import faltando, exceção engolida).</p></div>
+    <div class="cartao"><div class="num">2</div><h3>Testes</h3><p>A suíte inteira, isolada em pastas temporárias: nunca toca nas suas conversas, no <code>settings.json</code> nem no Agendador.</p></div>
+    <div class="cartao"><div class="num">3</div><h3>PC limpo</h3><p>Instala, sobe o servidor, abre a página, encerra e desinstala numa máquina nova, no Windows e no Linux.</p></div>
+  </div>
+  <div class="grade c3 segunda">
+    <div class="cartao peq"><h3>Sem segredo</h3><p>O roteiro só lê o código; não usa senha nem chave.</p></div>
+    <div class="cartao peq"><h3>Dependabot</h3><p>Uma vez por semana avisa de versão nova das dependências.</p></div>
+    <div class="cartao peq"><h3>Nada pessoal</h3><p>Um teste procura nome, e-mail e caminho pessoal em todos os arquivos.</p></div>
+  </div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>36 / 44</span></div></section>
+<section class="slide" id="p23">
+<div class="cab"><span class="kick">Na prática</span><h2>Um ciclo de trabalho com o Cérebro</h2></div>
+<div class="corpo cheio"><div class="grade c3 passos"><div class="passo"><div class="pn">1</div><h3>Abrir o painel</h3><p><b>Precisa de você</b>, no pé da barra lateral, mostra o que espera.</p></div><div class="passo"><div class="pn">2</div><h3>Pedir e delegar</h3><p>Você cria uma <b>tarefa</b>; a gestora recebe e manda a subagentes. O painel mostra a regra aplicada.</p></div><div class="passo"><div class="pn">3</div><h3>Acompanhar</h3><p>Agentes ao vivo: estado, modelo, tokens e passo a passo.</p></div><div class="passo"><div class="pn">4</div><h3>Conferir</h3><p>O subagente terminou e entrou em <b>A conferir</b>. O gestor vê o diff e roda os testes.</p></div><div class="passo"><div class="pn">5</div><h3>Registrar</h3><p>Aprovado, corrigido ou recusado. Decisões e regras vão para a linha do tempo.</p></div><div class="passo"><div class="pn">6</div><h3>Guardar e evoluir</h3><p>O backup guarda tudo e os capítulos mantêm a gestora em dia. <b>Analisar agora</b> propõe melhorias.</p></div></div>
+<div class="faixa">O ciclo se repete a cada tarefa. O que foi aprendido fica guardado para a próxima.</div></div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>37 / 44</span></div></section>
+<section class="slide" id="p24">
+<div class="cab"><span class="kick">Economia de tokens</span><h2>Qualidade primeiro. A economia vem da memória.</h2></div>
+<div class="corpo cheio">
+  <div class="grade c4">
+    <div class="cartao"><div class="num">1</div><h3>Memória persistente</h3><p>Decisões, regras e a memória do Claude Code ficam guardadas. O que já foi decidido e verificado é reaproveitado, em vez de explicado de novo.</p></div>
+    <div class="cartao"><div class="num">2</div><h3>Modelo certo por tarefa</h3><p>Tarefa mecânica no modelo menor, código comum no intermediário, o crítico no maior. A regra fica à vista em cada subagente.</p></div>
+    <div class="cartao"><div class="num">3</div><h3>Revisão do maior</h3><p>Todo resultado passa pelo gestor antes de entrar. Delegar não dispensa a verificação, e a economia não vem de pular a revisão.</p></div>
+    <div class="cartao"><div class="num">4</div><h3>Você mede</h3><p>Contexto fixo em tokens, custo por modelo e dia, e % aprovado de primeira. A análise é sem IA, então não gasta tokens.</p></div>
+  </div>
+  <div class="faixa suave">O Cérebro não promete um percentual de economia. Ele mostra onde seus tokens vão e deixa as regras explícitas, para você ajustar com dados.</div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>38 / 44</span></div></section>
+<section class="slide" id="p25">
+<div class="cab"><span class="kick">Segurança e privacidade</span><h2>Tudo no seu computador. Nada sai.</h2></div>
+<div class="corpo cheio">
+  <div class="grade c4">
+    <div class="cartao seg"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><h3>Só 127.0.0.1</h3><p>O servidor escuta apenas neste computador (o código não aceita outro endereço) e exige uma chave aleatória, guardada num cookie HttpOnly.</p></div>
+    <div class="cartao seg"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0118 0"/><path d="M6 12a6 6 0 0112 0"/><path d="M4 4l16 16"/></svg><h3>Nada sai do PC</h3><p>Sem conta, sem nuvem, sem telemetria. Só quando você clica: a consulta pública de versões (Novidades) e a explicação do mapa por IA, com trechos curtos e mascarados.</p></div>
+    <div class="cartao seg"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M4 4l16 16"/></svg><h3>Segredos mascarados</h3><p>Chaves, senhas, tokens e URLs com senha que aparecem em conversas viram <b>[segredo oculto]</b> antes de ir para a tela.</p></div>
+    <div class="cartao seg"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 10l3 2-3 2M12 14h5"/></svg><h3>Lista fechada de comandos</h3><p>Só roda o que você aprovou, com o seu clique. Sem shell, com tempo limite e saída mascarada.</p></div>
+  </div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>39 / 44</span></div></section>
+<section class="slide" id="p26">
+<div class="cab"><span class="kick">Segurança e privacidade</span><h2>O que lê, o que escreve, o que nunca faz</h2></div>
+<div class="corpo cheio">
+  <div class="grade c3">
+    <div class="cartao"><h3 class="ciano">Lê e grava sem perguntar</h3><ul><li>Lê as conversas e a memória do Claude Code, o git e o <code>graphify-out</code></li><li>Grava só em <code>~/.cerebro</code>: configuração, decisões, tarefas, capítulos, histórico</li></ul></div>
+    <div class="cartao"><h3 class="ciano">Só com o seu sim</h3><ul><li><code>settings.json</code> (ganchos), Agendador (só <code>CerebroDoProjeto</code>), pasta de backup</li><li>Memória, restauração, <code>CLAUDE.local.md</code>, plano de encaixe, instalar ferramentas</li></ul></div>
+    <div class="cartao"><h3 class="ciano">Nunca faz</h3><ul><li>Apagar o que é seu</li><li>Rodar comando que você não aprovou</li><li>Mexer em tarefa agendada que não seja dele</li></ul></div>
+  </div>
+  <div class="grade c3 segunda">
+    <div class="cartao peq"><h3>Sempre com prévia</h3><p>Mostra a diferença, guarda cópia em <code>~/.cerebro/copias</code>, grava de forma atômica e permite desfazer.</p></div>
+    <div class="cartao peq"><h3>Travas de remoção</h3><p>Uma trava central. Exceções estreitas: backups antigos e, se você autorizar, transcrições antigas da gestora já guardadas.</p></div>
+    <div class="cartao peq"><h3>Proteção do servidor</h3><p>Só 127.0.0.1, Host e Origin conferidos, CSP restritiva; os ganchos têm segredo próprio.</p></div>
+  </div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>40 / 44</span></div></section>
+<section class="slide" id="p27">
+<div class="cab"><span class="kick">Como começar</span><h2>Do clone ao painel em três comandos</h2></div>
+<div class="corpo duas">
+  <div class="esq" style="width:520px">
+    <h4>O que você precisa</h4>
+    <table class="tab">
+      <tr><td>Sistema</td><td><b>Windows 10/11</b> (com atalho). macOS e Linux funcionam, sem atalho automático.</td></tr>
+      <tr><td>Python</td><td>3.11 ou mais novo. O instalador cria um <code>.venv</code> só para o Cérebro.</td></tr>
+      <tr><td>Claude Code</td><td>O Cérebro lê as conversas que ele guarda. Sem conversas, o painel abre vazio.</td></tr>
+      <tr><td>Git</td><td>Opcional: mostra ramo e último commit.</td></tr>
+      <tr><td>Graphify</td><td>Opcional: só para o mapa. O instalador pergunta antes.</td></tr>
+    </table>
+  </div>
+  <div class="dir" style="width:640px">
+    <div class="term"><div class="barra"><i></i><i></i><i></i><span>instalação</span></div>
+<pre>git clone <span class="a">&lt;endereço do repositório&gt;</span>
+cd cerebro-do-projeto
+python instalar.py</pre></div>
+    <div class="caixa aviso"><b>Sem Git?</b><p>No GitHub, botão verde <b>Code</b> › <b>Download ZIP</b>, descompacte e rode <code>python instalar.py</code> na pasta.</p></div>
+    <h4>O que o <code>instalar.py</code> faz</h4>
+    <ul class="pequena"><li>Confere o Python e cria o <code>.venv</code> com dependências de versão fixa</li><li>Oferece o Graphify e os ganchos (mostra a diferença; só com o seu sim)</li><li>Cria <code>~/.cerebro</code> e, se quiser, o atalho na área de trabalho</li><li>Abre o painel. Pode rodar de novo sem estragar nada</li></ul>
+  </div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>41 / 44</span></div></section>
+<section class="slide" id="p28">
+<div class="cab"><span class="kick">Como começar</span><h2>Primeiro uso guiado, ou veja a demonstração sem dados</h2></div>
+<div class="corpo cheio">
+  <div class="grade c3">
+    <div class="cartao"><div class="num">1</div><h3>Abrir</h3><p>Clique no atalho <b>Cérebro do Projeto</b>, ou rode <code>abrir_cerebro.bat</code> (Windows) ou <code>./abrir_cerebro.sh</code> (macOS e Linux). O navegador abre em <code>127.0.0.1:8188</code> já com a chave.</p></div>
+    <div class="cartao"><div class="num">2</div><h3>Primeiro uso</h3><p>A faixa <b>Primeiro uso</b> leva ao passo a passo: projetos, gestora, mapa e comandos sugeridos. Pode pular e voltar.</p></div>
+    <div class="cartao"><div class="num">3</div><h3>Ver sem dados seus</h3><p>Rode <code>python demo/rodar_demo.py</code>. Sobe o Cérebro com projetos 100% fictícios, com tarefas, orçamento, capítulos e backup: seu <code>~/.cerebro</code> e seu <code>~/.claude</code> não são usados.</p></div>
+  </div>
+  <div class="grade c3 segunda">
+    <div class="cartao peq"><h3>Atualizar</h3><p><code>git pull</code> e <code>python instalar.py</code>. A configuração é migrada sozinha e o que você ajustou é mantido.</p></div>
+    <div class="cartao peq"><h3>Desinstalar</h3><p><code>python desinstalar.py</code> pergunta a cada passo: atalho, <code>.venv</code>, tarefas, ganchos e, à parte, <code>~/.cerebro</code> e os backups.</p></div>
+    <div class="cartao peq"><h3>Fechar</h3><p>O servidor encerra sozinho após 30 minutos sem página aberta. Também há um botão para encerrar.</p></div>
+  </div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>42 / 44</span></div></section>
+<section class="slide" id="p29">
+<div class="cab"><span class="kick">Limites conhecidos</span><h2>O que ainda não foi visto funcionando de verdade</h2></div>
+<div class="corpo cheio">
+  <div class="grade c3 lista-prox">
+    <div class="cartao"><h3>Ganchos e gestora vistos no app real</h3><p>Ganchos, capítulos e a limpeza da gestora funcionaram com o Claude Code real (29/10). Falta ver a retenção de transcrições antigas.</p></div>
+    <div class="cartao"><h3>Agendador e avisos do Windows</h3><p>A tarefa agendada e o aviso na tela não foram vistos num Windows de verdade. Use <b>Testar aviso</b>; erro aparece na página.</p></div>
+    <div class="cartao"><h3>Instalar ferramentas</h3><p>Nenhum pip, winget, cargo ou npm real rodou nos testes. O comando aparece antes; confira.</p></div>
+    <div class="cartao"><h3>Verificação no GitHub</h3><p>O roteiro está pronto, mas só roda quando o repositório estiver no GitHub.</p></div>
+    <div class="cartao"><h3>Estimativas</h3><p>Custo é pelo preço de lista. Avisos de memória são por palavras e podem dar alarme falso.</p></div>
+    <div class="cartao"><h3>Sem os ganchos</h3><p>Os agentes ao vivo vêm da leitura dos arquivos (cerca de 1 s de atraso) e as tarefas chegam pela linha de comando.</p></div>
+  </div>
+  <div class="faixa suave">Lista completa e honesta em <code>docs/referencia.md</code>, seção Limites conhecidos.</div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>43 / 44</span></div></section>
+<section class="slide" id="p30">
+<div class="fim">
+  <div class="marca grande"><span class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6EE2FF"/><stop offset="55%" stop-color="#00B2FF"/><stop offset="100%" stop-color="#0057D6"/></linearGradient></defs><path d="M 128,24 L 218.07,76 L 218.07,180 L 128,232 L 37.93,180 L 37.93,76 Z" fill="none" stroke="url(#lg)" stroke-width="16" stroke-linejoin="round"/><g stroke="url(#lg)" stroke-width="12" stroke-linecap="round" fill="none"><path d="M 90,150 L 128,100 L 166,150 M 90,150 L 166,150"/></g><g fill="url(#lg)"><circle cx="128" cy="100" r="17"/><circle cx="90" cy="150" r="17"/><circle cx="166" cy="150" r="17"/></g></svg>
+</span><span>Cérebro <em>do Projeto</em></span></div>
+  <h2>Gestão visual para quem trabalha com agentes</h2>
+  <div class="cred" style="grid-template-columns:repeat(3,1fr);max-width:900px">
+    <div><b>Motor do mapa</b><span>Graphify (Apache-2.0, de safishamsi), instalado à parte e opcional</span></div>
+    <div><b>Licença</b><span>MIT, código aberto</span></div>
+    <div><b>Versão</b><span>1.3.0</span></div>
+  </div>
+  <p class="peq2">Claude Code é um produto da Anthropic. O Cérebro do Projeto é um projeto independente e funciona ao lado dele.</p>
+  <div class="aviso-final">Código aberto no GitHub: <b>cerebro-do-projeto</b> · README, CONTRIBUTING e SECURITY no repositório</div>
+</div><div class="rod"><span><b>Cérebro</b> do Projeto</span><span>44 / 44</span></div></section>
+</body></html>
