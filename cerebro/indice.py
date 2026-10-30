@@ -77,6 +77,41 @@ def pasta_claude(slug):
     return config.PROJETOS_CLAUDE / slug
 
 
+PREFIXO_IA = "ia/"          # conversas das outras IAs (ias_externas.py): ~/.cerebro/ias/<slug>/<sessão do gestor>/agent-ia-*.jsonl
+
+
+def pasta_ias(slug):
+    return config.CASA / "ias" / slug
+
+
+def caminho_arquivo(slug, rel):
+    """Caminho no disco de um 'rel' da lista: dentro da pasta do Claude Code ou, com o prefixo ia/, na pasta das outras IAs."""
+    if rel.startswith(PREFIXO_IA):
+        return pasta_ias(slug) / rel[len(PREFIXO_IA):]
+    return pasta_claude(slug) / rel
+
+
+def _listar_ias(slug, saida):
+    """Outras IAs que o gestor comandou: aparecem como subagentes da sessão que as chamou."""
+    try:
+        sessoes = [e for e in os.scandir(pasta_ias(slug)) if e.is_dir()]
+    except OSError:
+        return
+    for e in sessoes:
+        try:
+            itens = list(os.scandir(e.path))
+        except OSError:
+            continue
+        for a in itens:
+            if a.is_file() and a.name.startswith("agent-ia-") and a.name.endswith(".jsonl"):
+                try:
+                    st = a.stat()
+                except OSError:
+                    continue
+                saida.append({"rel": f"{PREFIXO_IA}{e.name}/{a.name}", "tipo": "subagente", "sessao": e.name,
+                              "id": a.name[len("agent-"):-6], "tam": st.st_size, "mtime": st.st_mtime})
+
+
 def listar_arquivos(slug):
     """Todos os arquivos de transcrição do projeto: sessões e subagentes (sem ler o conteúdo, só a lista e as datas)."""
     base = pasta_claude(slug)
@@ -84,7 +119,7 @@ def listar_arquivos(slug):
     try:
         entradas = list(os.scandir(base))
     except OSError:
-        return saida
+        entradas = []
     for e in entradas:
         if e.is_file() and e.name.endswith(".jsonl"):
             try:
@@ -108,6 +143,7 @@ def listar_arquivos(slug):
                     aid = a.name[len("agent-"):-6]
                     saida.append({"rel": f"{e.name}/subagents/{a.name}", "tipo": "subagente", "sessao": e.name, "id": aid,
                                   "tam": st.st_size, "mtime": st.st_mtime})
+    _listar_ias(slug, saida)
     return saida
 
 
@@ -115,7 +151,7 @@ def ler_meta(slug, arq):
     """agent-<id>.meta.json (não documentado): {} se não houver ou estiver diferente do esperado."""
     if arq["tipo"] != "subagente":
         return {}
-    caminho = pasta_claude(slug) / arq["rel"].replace(".jsonl", ".meta.json")
+    caminho = caminho_arquivo(slug, arq["rel"].replace(".jsonl", ".meta.json"))
     try:
         d = json.loads(caminho.read_text(encoding="utf-8"))
         if not isinstance(d, dict):
@@ -160,7 +196,7 @@ def titulo_sessao(slug, sessao_id, cfg, ind=None):
 def indice_do_arquivo(slug, arq):
     """Índice atualizado de um arquivo (lê só o que é novo). Pode demorar na primeira vez de um arquivo grande."""
     est = estado(slug)
-    caminho = pasta_claude(slug) / arq["rel"]
+    caminho = caminho_arquivo(slug, arq["rel"])
     with est.trava:
         ind, mudou = transcricao.atualizar_indice(caminho, est.arquivos.get(arq["rel"]))
         if mudou or arq["rel"] not in est.arquivos:

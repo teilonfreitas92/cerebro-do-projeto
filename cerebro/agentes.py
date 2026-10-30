@@ -123,7 +123,8 @@ def montar(slug, precos, gestora_id, horas=24, todas=False, cfg=None):
                        tipo_agente=str(meta.get("agentType") or ""), nivel=meta.get("spawnDepth"),
                        modelo=sub["modelo"] or str(meta.get("model") or ""), estado=_estado_sub(a["mtime"], meta),
                        delegado_pelo_gestor=eh_gestora)
-            sub["regra"] = regras_agentes.aplicar(sub["descricao"], sub["tipo_agente"], sub["modelo"], regras)
+            # outra IA (ias_externas.py) não segue a tabela de modelos do Claude
+            sub["regra"] = None if sub["tipo_agente"].startswith("ia:") else regras_agentes.aplicar(sub["descricao"], sub["tipo_agente"], sub["modelo"], regras)
             if eh_gestora:
                 sub["conferencia"] = conferencias.get(a["id"]) or ("a_conferir" if sub["estado"] == "terminou" else "")
             no["subagentes"].append(sub)

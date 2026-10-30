@@ -109,6 +109,12 @@ def montar(cfg=None, raiz=None):
          "(diff, testes, fotos) e marcado com `conferir`. Modelo por tipo de tarefa:", ""]
     L += _tabela_agentes(cfg)
     L += ["", "Registre na hora toda decisão do dono e toda regra nova com `decisao` (o Cérebro guarda e mostra na linha do tempo).", "",
+          "## Outras IAs como subagentes (OpenAI, DeepSeek, Grok, Gemini)",
+          f"- `python {cli} ia situacao` mostra quais têm chave (o dono cola em Configurações; você nunca pede nem digita chave).",
+          f"- `python {cli} ia rodar <projeto> --ia openai|deepseek|grok|gemini --tarefa \"...\"` (ou `--arquivo-tarefa f.md`): "
+          "a IA trabalha numa cópia (ramo ia/...), aparece em Agentes ao vivo e termina com resumo, diff e o id. Rode em segundo plano.",
+          "- Confira como um subagente (diff, testes). Aceito: `ia juntar <projeto> <id>`; recusado: `ia descartar <projeto> <id>`. "
+          "Marque com `conferir`.", "",
           "## Conversa longa: a gestora nunca é trocada",
           "1. Padrão, sem toque do dono: quando a conversa enche, o Claude Code compacta sozinho; o Cérebro grava antes um capítulo "
           "(feito, falta, decisões, arquivos, ramo) e, logo depois, devolve o resumo aqui. Confira o estado real e continue.",

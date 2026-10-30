@@ -2,6 +2,15 @@
 
 Formato simples, em português. A versão atual fica em `cerebro/__init__.py`.
 
+## Próxima versão
+
+- **Outras IAs como subagentes**: o gestor manda OpenAI, DeepSeek, Grok ou Gemini fazer o serviço de um subagente
+  (`python cerebro_cli.py ia rodar <projeto> --ia deepseek --tarefa "..."`). A IA trabalha numa cópia separada do projeto (git
+  worktree), presa a ela e só com comandos permitidos; aparece em Agentes ao vivo; o gestor confere o diff e junta ou descarta.
+  Chaves em Configurações › Outras IAs (só a conta do dono lê; fora do backup).
+- **Agentes ao vivo com cara de terminal**: `>` pedido, `●` texto e ferramentas, `⎿` resultado, rodapé com "Trabalhando…".
+- Cartão de título longo não alarga mais a coluna (Agentes ao vivo e Memória).
+
 ## 1.3.0 — cópia de segurança, agentes instantâneos e mais controle (29/10/2026)
 
 Esta versão **escreve fora de `~/.cerebro` pela primeira vez** (conversas, memória, `settings.json` do Claude Code, arquivos do projeto).

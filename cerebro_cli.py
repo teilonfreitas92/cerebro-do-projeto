@@ -45,7 +45,7 @@ import threading
 import time
 from pathlib import Path
 
-from cerebro import analise, bastao, cli_backup, cli_encaixe, cli_gestora, config, decisoes, explicar_ia, indice, mapa_auto, memoria_avisos, memoria_compactar, memoria_edicao, orcamento, projetos, propostas, revisoes, tarefas_gestor
+from cerebro import analise, bastao, cli_backup, cli_encaixe, cli_gestora, cli_ias, config, decisoes, explicar_ia, indice, mapa_auto, memoria_avisos, memoria_compactar, memoria_edicao, orcamento, projetos, propostas, revisoes, tarefas_gestor
 
 SAIDA_OK, SAIDA_ERRO = 0, 2
 
@@ -420,6 +420,7 @@ def main(argv=None):
     s.add_argument("projeto")
     s.set_defaults(f=cmd_analisar)
     cli_backup.adicionar_subcomandos(sub)          # backup, rotina, agendar
+    cli_ias.adicionar_subcomandos(sub)             # ia: outras IAs fazendo serviço de subagente
     s = sub.add_parser("memoria", help="compactar o MEMORY.md ou ver avisos de memória")
     s.add_argument("projeto")
     s.add_argument("--compactar", action="store_true", help="mostra a proposta de compactação (sem IA)")
@@ -458,7 +459,7 @@ def main(argv=None):
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
     try:
         return a.f(a)
-    except (ValueError, *cli_backup.ERROS) as e:
+    except (ValueError, *cli_backup.ERROS, *cli_ias.ERROS) as e:
         print(f"Erro: {e}", file=sys.stderr)
         return SAIDA_ERRO
 

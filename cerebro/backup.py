@@ -47,6 +47,8 @@ NOME_PARCIAL = re.compile(r"^\d{4}-\d{2}-\d{2}(_\d{6})?\.zip\.parcial$")
 AREAS = ("claude", "cerebro")                     # claude/projects/... e cerebro/... dentro do zip
 CACHES_NOMES = {"indice.json", "dados.js", ".estado.json.gz", "servidor.json", "token"}
 CACHES_SUFIXOS = (".lock", ".tmp", ".parcial")
+FORA_DO_BACKUP = {"ias_chaves.json"}               # chaves das outras IAs: nunca saem de ~/.cerebro
+PASTAS_FORA = {"ias_trabalho"}                      # cópias de trabalho das outras IAs (git worktree): refazíveis
 MANTER_PADRAO = 7
 DIAS_ALERTA = 2                                   # "Precisa de você" avisa se o último backup tem mais que isso
 PEDACO = 1024 * 1024
@@ -157,11 +159,12 @@ def _arquivos_de(area, origem, excluir):
         return
     for raiz, pastas, arquivos in os.walk(origem):
         raiz_p = Path(raiz)
-        pastas[:] = sorted(d for d in pastas if not (raiz_p / d).is_symlink() and not any(_dentro(raiz_p / d, x) for x in excluir))
+        pastas[:] = sorted(d for d in pastas if not (raiz_p / d).is_symlink() and not any(_dentro(raiz_p / d, x) for x in excluir)
+                           and not (area == "cerebro" and raiz_p == origem and d in PASTAS_FORA))
         for nome in sorted(arquivos):
             p = raiz_p / nome
             partes = p.relative_to(origem).parts
-            if area == "cerebro" and _eh_cache(partes):
+            if area == "cerebro" and (_eh_cache(partes) or partes[-1] in FORA_DO_BACKUP):
                 continue
             if p.is_symlink():
                 continue

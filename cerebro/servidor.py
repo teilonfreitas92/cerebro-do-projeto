@@ -43,7 +43,8 @@ def nome_cookie(porta):
     demonstração) derrubavam a sessão um do outro."""
     return f"{COOKIE}_{porta}"
 ID_SESSAO = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
-REL_ARQUIVO = re.compile(r"^[A-Za-z0-9_.\-]{1,120}\.jsonl$|^[A-Za-z0-9_.\-]{1,120}/subagents/agent-[A-Za-z0-9_\-]{1,80}\.jsonl$")
+REL_ARQUIVO = re.compile(r"^[A-Za-z0-9_.\-]{1,120}\.jsonl$|^[A-Za-z0-9_.\-]{1,120}/subagents/agent-[A-Za-z0-9_\-]{1,80}\.jsonl$"
+                         r"|^ia/[A-Za-z0-9_.\-]{1,120}/agent-ia-[A-Za-z0-9_\-]{1,80}\.jsonl$")
 
 
 def _iguais(a, b):
@@ -63,6 +64,7 @@ ESTATICOS_WEB = {"app.js": "text/javascript", "ui.js": "text/javascript", "abas.
 ESTATICOS_MAPA = {"cerebro.css": "text/css", "cerebro.js": "text/javascript"}
 ESTATICOS_WEB.update({"tarefas.js": "text/javascript", "tarefas.css": "text/css"})      # tarefas para o gestor e orçamento
 ESTATICOS_MAPA["tarefa.js"] = "text/javascript"               # botão "Criar tarefa aqui" do mapa
+ESTATICOS_WEB["ias.js"] = "text/javascript"                   # Configurações › Outras IAs
 ESTATICOS_WEB["gestora.js"] = "text/javascript"              # corrente da gestora, capítulos e manual do gestor
 ESTATICOS_WEB["painel.js"] = "text/javascript"               # layout de painel: barra lateral, gaveta, abas internas, paginação
 
@@ -300,7 +302,7 @@ async def sse_passos(request):
     rel = request.query.get("arquivo", "")
     if not rel_valido(rel):
         return _erro("arquivo inválido")
-    caminho = indice.pasta_claude(p["slug"]) / rel
+    caminho = indice.caminho_arquivo(p["slug"], rel)
     if not caminho.is_file():
         return _erro("arquivo não encontrado", 404)
     app = request.app
@@ -722,6 +724,8 @@ def criar_app(porta, token=None):
     rotas_backup.registrar(r)                       # backup, restauração e rotinas no Windows (rotas_backup.py)
     rotas_memoria.registrar(r)                     # memória mais forte: editar, compactar, avisos, decisões, passa-bastão
     rotas_tarefas.registrar(r)
+    from . import rotas_ias
+    rotas_ias.registrar(r)                          # outras IAs: chaves (só entram) e modelos (rotas_ias.py)
     r.add_get("/mapa/{slug}/", mapa_arquivo)
     r.add_get("/mapa/{slug}/{nome}", mapa_arquivo)
     rotas_ganchos.registrar(app)

@@ -125,6 +125,30 @@ python cerebro_cli.py gestora preparar|trocar <projeto> [--marca ID]   # alterna
 `<projeto>` aceita o nome, o slug ou o caminho. Os comandos básicos escrevem só em `~/.cerebro`; os da 1.3 que escrevem fora dele estão descritos em Segurança. A página tem o guia
 **Como usar** (botão no topo) com cada aba, como abrir, onde ficam os dados e a segurança.
 
+### Outras IAs como subagentes (OpenAI, DeepSeek, Grok, Gemini)
+
+O gestor pode mandar outra IA fazer o serviço de um subagente: ler, procurar, editar arquivos e rodar testes. As quatro usam o mesmo
+formato de chamada (chat completions com ferramentas), então um laço só (`cerebro/ias_externas.py`) serve para todas.
+
+```
+python cerebro_cli.py ia situacao                                    # quais têm chave e qual modelo
+python cerebro_cli.py ia rodar <projeto> --ia deepseek --tarefa "..." # ou --arquivo-tarefa tarefa.md
+python cerebro_cli.py ia listar <projeto>
+python cerebro_cli.py ia juntar <projeto> <id>                       # depois de conferir o diff
+python cerebro_cli.py ia descartar <projeto> <id>
+```
+
+- **Cópia separada**: a IA trabalha num `git worktree` em `~/.cerebro/ias_trabalho/<slug>/<id>` (ramo `ia/<ia>-<id>`); a pasta do
+  projeto não muda até o gestor juntar. Projeto sem git é recusado.
+- **Presa à cópia**: caminhos fora dela ou dentro de `.git` são recusados; comandos só da lista (testes, build, `git status/diff/log`),
+  sem `;` `&` `|` `<` `>` crase `$` `%`. Limites: 40 voltas e 30 minutos por serviço (`config.json > ias`).
+- **Visível**: a conversa vai para `~/.cerebro/ias/<slug>/<sessão do gestor>/agent-ia-*.jsonl` no formato dos subagentes do Claude Code,
+  então aparece em Agentes ao vivo (com o terminal), em Custos (tokens; o custo em dólar aparece quando o modelo está na tabela de preços)
+  e na conferência do gestor (`conferir <projeto> ia-<ia>-<id>`).
+- **Chaves**: o dono cola em Configurações › Outras IAs. Ficam em `~/.cerebro/ias_chaves.json`, legível só pela conta do dono; a página
+  nunca recebe a chave de volta (só os 4 últimos caracteres) e o backup não leva o arquivo. Modelos padrão: `gpt-5`, `deepseek-chat`,
+  `grok-4`, `gemini-2.5-pro` (troque em Configurações se a sua conta usa outro).
+
 ### Conversa longa da gestora: compactação automática (padrão) e limpeza opcional
 
 A gestora **nunca é trocada**. Há dois caminhos para a conversa longa.
@@ -325,6 +349,9 @@ próxima leitura. A leitura é incremental (guarda a posição em bytes): a prim
   avisos.json, avisos.jsonl         preferências dos avisos do Windows e o histórico
   avisos_enviados.json              quais alertas de orçamento/backup já avisaram hoje (no máximo 1 vez por dia)
   orcamento.json                    limites de gasto (geral e por projeto)
+  ias_chaves.json                   chaves das outras IAs (só a sua conta lê; fora do backup)
+  ias\<slug>\<sessão>\agent-ia-*.jsonl  conversas das outras IAs (aparecem como subagentes); ias\<slug>\_resultados\<id>.json
+  ias_trabalho\<slug>\<id>\          cópias de trabalho das outras IAs (git worktree; fora do backup)
   novidades.json                    última consulta do vigia de novidades
   rotinas\<rotina>.log, .json, .xml registro, último resultado e a definição da tarefa agendada de cada rotina
   copias\                           cópia do que foi trocado: memoria\, decisoes\, settings\, projetos\<slug>\<data-hora>\, restauracao-<data>\
