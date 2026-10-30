@@ -4,6 +4,10 @@ Formato simples, em português. A versão atual fica em `cerebro/__init__.py`.
 
 ## Próxima versão
 
+- **Janelas (terminal)**: mosaico de janelas de prompt lado a lado (ideia do MAESTRI). **Controle a sessão pelo painel**: o Cérebro
+  abre o `claude` (sessão nova ou retomando uma) num terminal de verdade e você digita, aprova e interrompe ali, como no cmd.
+  Janelas de leitura acompanham sozinhas os agentes que estão trabalhando. Nova dependência no Windows: `pywinpty`; o xterm.js
+  6.0.0 vem junto (licença MIT, em NOTICE).
 - **Outras IAs como subagentes**: o gestor manda OpenAI, DeepSeek, Grok ou Gemini fazer o serviço de um subagente
   (`python cerebro_cli.py ia rodar <projeto> --ia deepseek --tarefa "..."`). A IA trabalha numa cópia separada do projeto (git
   worktree), presa a ela e só com comandos permitidos; aparece em Agentes ao vivo; o gestor confere o diff e junta ou descarta.

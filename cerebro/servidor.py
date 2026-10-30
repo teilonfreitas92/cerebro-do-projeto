@@ -20,7 +20,7 @@ from pathlib import Path
 from aiohttp import web
 
 from . import (__version__, agentes, bastao, config, custos, ferramentas, ganchos_eventos, indice, mapa_auto, memoria, painel,
-               projetos, propostas, regras_agentes, revisoes, rotas_ganchos, rotas_memoria, rotinas, titulos, transcricao)
+               projetos, propostas, regras_agentes, revisoes, rotas_ganchos, rotas_memoria, rotinas, terminais, titulos, transcricao)
 from . import rotas_encaixe
 from .rotas_gestor import (api_agentes_previa, api_agentes_previa_gerar, api_analise, api_analise_rodar, api_conferir, api_conferir_marcar,
                            api_decisao_nova, api_decisoes, api_departamentos, api_departamentos_salvar, api_ferramenta_execucoes,
@@ -67,6 +67,8 @@ ESTATICOS_MAPA["tarefa.js"] = "text/javascript"               # botão "Criar ta
 ESTATICOS_WEB["ias.js"] = "text/javascript"                   # Configurações › Outras IAs
 ESTATICOS_WEB["gestora.js"] = "text/javascript"              # corrente da gestora, capítulos e manual do gestor
 ESTATICOS_WEB["painel.js"] = "text/javascript"               # layout de painel: barra lateral, gaveta, abas internas, paginação
+ESTATICOS_WEB.update({"terminais.js": "text/javascript", "xterm.js": "text/javascript", "xterm-fit.js": "text/javascript",
+                      "xterm.css": "text/css"})               # mosaico de janelas e terminal de verdade (xterm.js 6.0.0, MIT)
 
 
 def hosts_validos(porta):
@@ -732,6 +734,8 @@ def criar_app(porta, token=None):
     rotas_encaixe.registrar(app)              # encaixe no projeto, cópia dos agentes e instalação de ferramentas (só com confirmação)
     from . import rotas_gestora
     rotas_gestora.registrar(app)              # troca da sessão gestora, capítulos e manual do gestor (GESTOR.md / CLAUDE.local.md)
+    from . import rotas_terminais
+    rotas_terminais.registrar(r)              # terminal de verdade: o claude num pseudo-terminal, pela página (rotas_terminais.py)
     return app
 
 
@@ -743,6 +747,8 @@ async def _vigia(app, intervalo=30):
         limite = config.ler_config().get("sem_pagina_minutos", 30) * 60
         if ganchos_eventos.hooks_ativos():
             continue                                  # o Claude Code está mandando eventos: os ganchos precisam do servidor no ar
+        if terminais.ativos():
+            continue                                  # um claude aberto num terminal do Cérebro morreria junto com o servidor
         if app[K_ESTADO]["sse_ativos"] == 0 and time.time() - app[K_ESTADO]["ultimo_ping"] > limite:
             print("Nenhuma página aberta há muito tempo: encerrando o Cérebro.", flush=True)
             app[K_PARAR].set()
@@ -860,6 +866,7 @@ async def _rodar(porta):
         for tf in tarefas_fundo:
             tf.cancel()
         ferramentas.parar_todos()
+        terminais.parar_todos()
         indice.salvar_tudo()
         liberar_instancia()
         await runner.cleanup()

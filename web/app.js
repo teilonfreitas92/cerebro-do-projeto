@@ -3,8 +3,8 @@
    h() / textContent, então um texto malicioso num transcrito não executa nada. */
 (() => {
   'use strict';
-  const { raiz, limpar, limpezas, h, s, trocar, num, tok, usd, haQuanto, dataCurta, hora, modeloCurto, tamanho, guardar, lembrar, api, post, cada, aoVivo,
-    icone, gaveta, abasInternas, encaixar } = window.CerebroUI;
+  const { raiz, limpar, limpezas, h, s, trocar, num, tok, usd, haQuanto, dataCurta, modeloCurto, tamanho, guardar, lembrar, api, post, cada, aoVivo,
+    icone, gaveta, abasInternas, encaixar, linhaPasso } = window.CerebroUI;
 
   /* ---------- tema e anéis de limite ---------- */
   function aplicarTema(escuro) {
@@ -208,7 +208,7 @@
   /* ====================================================================================================== */
   /* Cérebro do projeto                                                                                      */
   /* ====================================================================================================== */
-  const ABAS = [['visao', 'Visão geral'], ['agentes', 'Agentes ao vivo'], ['conferir', 'A conferir'], ['tarefas', 'Tarefas'], ['sessoes', 'Sessões'], ['memoria', 'Memória e decisões'],
+  const ABAS = [['visao', 'Visão geral'], ['agentes', 'Agentes ao vivo'], ['janelas', 'Janelas (terminal)'], ['conferir', 'A conferir'], ['tarefas', 'Tarefas'], ['sessoes', 'Sessões'], ['memoria', 'Memória e decisões'],
     ['custos', 'Custos'], ['mapa', 'Mapa'], ['ferramentas', 'Ferramentas'], ['analise', 'Análise'], ['novidades', 'Novidades'], ['inventario', 'Inventário'],
     ['configuracoes', 'Configurações']];
   const TELAS = { visao: abaVisao, agentes: abaAgentes, sessoes: abaSessoes, memoria: abaMemoria, custos: abaCustos, mapa: abaMapa, configuracoes: abaConfig,
@@ -235,7 +235,7 @@
       info.gestora ? h('span', { class: 'chip violet' }, 'Gestor: ' + info.gestora) : h('span', { class: 'chip warn' }, 'sem gestora'),
       h('span', { class: 'caminho mono muted', title: info.caminho }, info.caminho));
     (TELAS[aba] || abaVisao)(slug, conteudo, info, params);
-    if (aba !== 'mapa') encaixar(conteudo, { chave: 'p.' + aba, menu: aba === 'configuracoes' });   // cabe na tela: abas internas e páginas
+    if (aba !== 'mapa' && aba !== 'janelas') encaixar(conteudo, { chave: 'p.' + aba, menu: aba === 'configuracoes' });   // cabe na tela: abas internas e páginas
   }
 
   /* ---------- Visão geral ---------- */
@@ -349,11 +349,13 @@
       const n = achar(selecionado);
       cab.replaceChildren();
       rodape.replaceChildren(n && n.estado === 'trabalhando' ? h('span', { class: 'trabalhando' }, '✻ Trabalhando…') : null,
-        h('div', { class: 'prompt' }, h('span', null, '>'), h('span', { class: 'cursor' }), h('span', { class: 'dica' }, 'só leitura: responda na própria sessão')));
+        h('div', { class: 'prompt' }, h('span', null, '>'), h('span', { class: 'cursor' }), h('span', { class: 'dica' }, 'só leitura · para digitar, use "Controlar no terminal"')));
       if (!n) { cab.append(h('span', { class: 'muted' }, 'Clique num agente para ver o passo a passo ao vivo.')); return; }
       cab.append(h('b', null, n.descricao || n.titulo), chipEstado(n.estado), n.modelo ? h('span', { class: 'chip' }, modeloCurto(n.modelo)) : null,
         n.tipo === 'subagente' ? h('span', { class: 'chip' }, n.tipo_agente || 'subagente') : h('span', { class: 'chip accent' }, 'sessão'),
-        h('span', { class: 'muted' }, 'atualizado ' + haQuanto(n.mtime)), h('span', { class: 'chip ok', title: 'conexão ao vivo' }, 'ao vivo'));
+        h('span', { class: 'muted' }, 'atualizado ' + haQuanto(n.mtime)), h('span', { class: 'chip ok', title: 'conexão ao vivo' }, 'ao vivo'),
+        n.tipo === 'sessao' ? h('a', { class: 'bt pri fino', href: '#/p/' + encodeURIComponent(slug) + '/janelas?retomar=' + encodeURIComponent(n.id),
+          title: 'Abre esta sessão num terminal de verdade no painel: você digita, aprova e interrompe como no cmd' }, 'Controlar no terminal') : null);
     }
     function abrir(n) {
       if (abertoRel === n.rel) return;
@@ -377,20 +379,6 @@
       };
     }
     limpezas.push(() => { if (es) es.close(); });
-    /* cada passo vira uma linha como o Claude Code desenha no terminal: "> pedido", "● texto", "● Ferramenta(alvo)", "⎿ resultado" */
-    function linhaPasso(p, subagente) {
-      const quando = { title: hora(p.t) };
-      const linha = (classe, marca, ...corpo) => h('div', { class: 'passo ' + classe, ...quando }, h('span', { class: 'marca' }, marca), h('div', { class: 'corpo' }, ...corpo));
-      if (p.tipo === 'texto') return linha('texto', '●', p.texto);
-      if (p.tipo === 'usuario') return linha('usuario', '>', subagente ? h('span', { class: 'rotulo' }, 'tarefa recebida') : null, p.texto);
-      if (p.tipo === 'ferramenta') return linha('ferramenta', '●', h('b', null, p.nome.replace('mcp__', '')), p.alvo ? '(' + p.alvo + ')' : '');
-      if (p.tipo === 'resultado') {
-        const linhas = String(p.texto || '').split('\n'), mostrar = linhas.slice(0, 4);           // como o terminal: só o começo
-        return linha('resultado' + (p.erro ? ' erro' : ''), '⎿', (p.erro ? 'erro: ' : '') + mostrar.join('\n'),
-          linhas.length > 4 ? h('span', { class: 'mais' }, '\n… +' + (linhas.length - 4) + ' linhas') : null);
-      }
-      return linha('sistema', '·', p.texto);
-    }
     const origem = h('span', { class: 'chip' }, 'por leitura dos arquivos');
     function lerLista() {
       const url = base + '/agentes/stream?todas=' + (todas ? 1 : 0);

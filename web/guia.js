@@ -34,6 +34,7 @@
         secao('As seções de um projeto',
           lista([[h('b', null, 'Visão geral'), ': números do projeto, gestora, fila do gestor e atividade recente.'],
             [h('b', null, 'Agentes ao vivo'), ': sessões e subagentes em tempo real; clique para ver o passo a passo. Mostra a regra de tarefa aplicada a cada subagente (tipo → modelo → revisor) e se já foi conferido.'],
+            [h('b', null, 'Janelas (terminal)'), ': várias janelas de prompt lado a lado. Abra o Claude num terminal de verdade dentro do painel (sessão nova ou "Controlar uma sessão") e digite como no cmd; as janelas de leitura acompanham sozinhas quem está trabalhando.'],
             [h('b', null, 'A conferir'), ': todo subagente que terminou na sessão gestora espera aqui até o gestor marcar aprovado, corrigido ou recusado. Mostra quanto cada modelo (Haiku, Sonnet, Opus) acerta de primeira.'],
             [h('b', null, 'Tarefas'), ': o que você quer que o gestor faça. Crie aqui ou no mapa ("Criar tarefa aqui"). Estados: nova, recebida, em andamento, a conferir, feita e recusada, com histórico.'],
             [h('b', null, 'Sessões'), ': todas as conversas do projeto, com título melhor que o rótulo "### ... ###", resumo, tokens e custo. Conversa muito longa ganha o aviso "passar o bastão" e o botão Gerar resumo.'],

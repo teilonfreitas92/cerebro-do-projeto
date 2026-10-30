@@ -87,6 +87,21 @@
     return es;
   }
 
+  /* cada passo vira uma linha como o Claude Code desenha no terminal: "> pedido", "● texto", "● Ferramenta(alvo)", "⎿ resultado" */
+  function linhaPasso(p, subagente) {
+    const quando = { title: hora(p.t) };
+    const linha = (classe, marca, ...corpo) => h('div', { class: 'passo ' + classe, ...quando }, h('span', { class: 'marca' }, marca), h('div', { class: 'corpo' }, ...corpo));
+    if (p.tipo === 'texto') return linha('texto', '●', p.texto);
+    if (p.tipo === 'usuario') return linha('usuario', '>', subagente ? h('span', { class: 'rotulo' }, 'tarefa recebida') : null, p.texto);
+    if (p.tipo === 'ferramenta') return linha('ferramenta', '●', h('b', null, p.nome.replace('mcp__', '')), p.alvo ? '(' + p.alvo + ')' : '');
+    if (p.tipo === 'resultado') {
+      const linhas = String(p.texto || '').split('\n'), mostrar = linhas.slice(0, 4);           // como o terminal: só o começo
+      return linha('resultado' + (p.erro ? ' erro' : ''), '⎿', (p.erro ? 'erro: ' : '') + mostrar.join('\n'),
+        linhas.length > 4 ? h('span', { class: 'mais' }, '\n… +' + (linhas.length - 4) + ' linhas') : null);
+    }
+    return linha('sistema', '·', p.texto);
+  }
+
   window.CerebroUI = { raiz, limpezas, limpar, juntar, h, s, trocar, num, tok, usd, haQuanto, dataCurta, hora, modeloCurto, tamanho, guardar, lembrar,
-    api, post, cada, aoVivo, expirada, telas: {}, secoesConfig: [] };
+    api, post, cada, aoVivo, expirada, linhaPasso, telas: {}, secoesConfig: [] };
 })();

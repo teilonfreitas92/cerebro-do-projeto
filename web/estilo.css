@@ -458,6 +458,10 @@ body.lateral-recolhida { --larg-lateral: 64px; }
   .leitor-caixa .leitor { flex: 1 1 0; min-height: 0; max-height: none; }
   /* mapa: o quadro ocupa todo o espaço livre */
   .aba-mapa .mapa-quadro { height: auto; min-height: 0; }
+  /* janelas: o mosaico rola por dentro; a janela ampliada ocupa a altura toda */
+  .aba-janelas .mosaico { flex: 1 1 0; min-height: 0; overflow-y: auto; align-content: start; }
+  .aba-janelas .mosaico.com-maxi { grid-template-rows: minmax(0, 1fr); align-content: stretch; }
+  .aba-janelas .janela.maxi { height: auto; min-height: 0; }
   .grade.hub { overflow-y: auto; }
 }
 @media (max-width: 1023.98px) {
@@ -493,3 +497,28 @@ body.lateral-recolhida { --larg-lateral: 64px; }
 .principal > a.bt, .conteudo > a.bt, .conteudo > button.bt { align-self: flex-start; }
 .guia-grade.com-menu { max-width: 1240px; }
 @media (max-width: 480px) { .topo .marca h1 { display: none; } .topo { gap: 6px; } }
+
+/* ---------- Janelas: mosaico de janelas de prompt (terminal de verdade e janelas de leitura) ---------- */
+.barra-janelas select { max-width: 260px; }
+.msg-janelas { display: inline-flex; gap: 8px; align-items: center; flex-wrap: wrap; min-height: 22px; }
+.msg-janelas.erro, .msg-janelas .erro { color: var(--danger); }
+.mosaico { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 560px), 1fr)); margin-top: 10px; }
+.mosaico[data-colunas="1"] { grid-template-columns: minmax(0, 1fr); }
+.mosaico[data-colunas="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.mosaico[data-colunas="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.mosaico[data-colunas="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 900px) { .mosaico[data-colunas] { grid-template-columns: minmax(0, 1fr); } }
+.janela { display: flex; flex-direction: column; min-width: 0; height: 460px; border: 1px solid var(--t-borda); border-radius: var(--r-card, 10px); overflow: hidden;
+  --t-bg: #0c0c0c; --t-txt: #e4e4e4; --t-fraco: #8a8a8a; --t-borda: #2a2a2a; background: var(--t-bg); color: var(--t-txt); font-family: var(--font-mono); }
+.janela header { display: flex; align-items: center; gap: 8px; padding: 6px 10px; min-width: 0; }
+.janela header .tit { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 0 1 auto; }
+.janela header .chips, .janela header .acoes { display: inline-flex; gap: 6px; align-items: center; flex: none; }
+.janela header .espaco { flex: 1; }
+.janela .corpo-janela { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.janela.pty .corpo-janela { padding: 4px 0 0 8px; }
+.janela.pty .corpo-janela .xterm { flex: 1; min-height: 0; }
+.janela .passos { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; }
+.janela footer { flex: none; }
+.mosaico.com-maxi .janela:not(.maxi) { display: none; }
+.mosaico.com-maxi { grid-template-columns: minmax(0, 1fr) !important; }
+.janela.maxi { height: calc(100vh - 230px); min-height: 420px; }
