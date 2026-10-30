@@ -288,8 +288,8 @@
   function abaAgentes(slug, el, info, params) {
     let todas = false, dados = null, selecionado = null, abertoRel = null, es = null;
     const arvore = h('div', { class: 'arvore caixa-pag' });          // caixa-pag: vira páginas da altura da coluna
-    const cab = h('header'), lista = h('div', { class: 'passos' });
-    const painel = h('section', { class: 'cartao painel-passos' }, cab, lista);
+    const cab = h('header'), lista = h('div', { class: 'passos' }), rodape = h('footer');
+    const painel = h('section', { class: 'cartao painel-passos terminal' }, cab, lista, rodape);          // visual de terminal (Claude Code no cmd)
     const base = '/api/p/' + encodeURIComponent(slug);
 
     function chipEstado(est) { return h('span', { class: 'chip ' + (est === 'trabalhando' ? 'ok' : est === 'parado' ? 'warn' : '') }, h('span', { class: 'ponto ' + est }), est); }
@@ -348,6 +348,8 @@
     function desenharCab() {
       const n = achar(selecionado);
       cab.replaceChildren();
+      rodape.replaceChildren(n && n.estado === 'trabalhando' ? h('span', { class: 'trabalhando' }, '✻ Trabalhando…') : null,
+        h('div', { class: 'prompt' }, h('span', null, '>'), h('span', { class: 'cursor' }), h('span', { class: 'dica' }, 'só leitura: responda na própria sessão')));
       if (!n) { cab.append(h('span', { class: 'muted' }, 'Clique num agente para ver o passo a passo ao vivo.')); return; }
       cab.append(h('b', null, n.descricao || n.titulo), chipEstado(n.estado), n.modelo ? h('span', { class: 'chip' }, modeloCurto(n.modelo)) : null,
         n.tipo === 'subagente' ? h('span', { class: 'chip' }, n.tipo_agente || 'subagente') : h('span', { class: 'chip accent' }, 'sessão'),
@@ -375,13 +377,19 @@
       };
     }
     limpezas.push(() => { if (es) es.close(); });
+    /* cada passo vira uma linha como o Claude Code desenha no terminal: "> pedido", "● texto", "● Ferramenta(alvo)", "⎿ resultado" */
     function linhaPasso(p, subagente) {
-      const t = h('span', { class: 'hora' }, hora(p.t));
-      if (p.tipo === 'texto') return h('div', { class: 'passo texto' }, t, h('div', { class: 'corpo' }, h('span', { class: 'rotulo' }, 'Agente'), p.texto));
-      if (p.tipo === 'usuario') return h('div', { class: 'passo usuario' }, t, h('div', { class: 'corpo' }, h('span', { class: 'rotulo' }, subagente ? 'Tarefa recebida' : 'Pedido do usuário'), p.texto));
-      if (p.tipo === 'ferramenta') return h('div', { class: 'passo ferramenta' }, t, h('div', { class: 'corpo' }, h('b', null, p.nome.replace('mcp__', '')), p.alvo));
-      if (p.tipo === 'resultado') return h('div', { class: 'passo resultado' + (p.erro ? ' erro' : '') }, t, h('div', { class: 'corpo' }, '↳ ' + (p.erro ? 'erro: ' : '') + p.texto));
-      return h('div', { class: 'passo sistema' }, t, h('div', { class: 'corpo' }, p.texto));
+      const quando = { title: hora(p.t) };
+      const linha = (classe, marca, ...corpo) => h('div', { class: 'passo ' + classe, ...quando }, h('span', { class: 'marca' }, marca), h('div', { class: 'corpo' }, ...corpo));
+      if (p.tipo === 'texto') return linha('texto', '●', p.texto);
+      if (p.tipo === 'usuario') return linha('usuario', '>', subagente ? h('span', { class: 'rotulo' }, 'tarefa recebida') : null, p.texto);
+      if (p.tipo === 'ferramenta') return linha('ferramenta', '●', h('b', null, p.nome.replace('mcp__', '')), p.alvo ? '(' + p.alvo + ')' : '');
+      if (p.tipo === 'resultado') {
+        const linhas = String(p.texto || '').split('\n'), mostrar = linhas.slice(0, 4);           // como o terminal: só o começo
+        return linha('resultado' + (p.erro ? ' erro' : ''), '⎿', (p.erro ? 'erro: ' : '') + mostrar.join('\n'),
+          linhas.length > 4 ? h('span', { class: 'mais' }, '\n… +' + (linhas.length - 4) + ' linhas') : null);
+      }
+      return linha('sistema', '·', p.texto);
     }
     const origem = h('span', { class: 'chip' }, 'por leitura dos arquivos');
     function lerLista() {
